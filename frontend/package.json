@@ -3,16 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "cra-template-redux": "1.0.3",
     "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.6.3",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "@reduxjs/toolkit": "^1.5.1",
+    "cra-template-redux": "1.0.3",
+    "date-fns": "^2.22.1",
     "framer-motion": "^4.1.17",
     "history": "^5.0.0",
+    "linkifyjs": "*",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.2.0",
     "react-redux": "^7.2.4",
     "react-router": "^6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0",
@@ -38,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/linkifyjs": "^2.1.3"
   }
 }
