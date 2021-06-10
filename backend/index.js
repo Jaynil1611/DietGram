@@ -4,7 +4,10 @@ const compression = require("compression");
 const dotenv = require("dotenv");
 
 const { initializeDBConnection } = require("./db/db.connect");
-const { createUser } = require("./utils/createUser");
+
+const userRouter = require("./routes/user.router");
+const loginRouter = require("./routes/login.router");
+const postRouter = require("./routes/post.router");
 
 const { pathNotFoundHandler } = require("./middlewares/pathNotFoundHandler");
 const { errorHandler } = require("./middlewares/errorHandler");
@@ -23,7 +26,9 @@ app.get("/", (req, res) => {
   res.json("Welcome to Dietify Quiz");
 });
 
-// app.use("/quizzes", quizRouter);
+app.use("/login", loginRouter);
+app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
 app.use(pathNotFoundHandler);
 app.use(errorHandler);

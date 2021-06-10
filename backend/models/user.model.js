@@ -32,20 +32,28 @@ const UserSchema = new Schema(
       required: "Password is required",
       validate: {
         validator: function (value) {
-          return /^(?=.*[A-Za-z])(?=.*\d).{6,}$/g.test(value);
+          return /^(?=.+[A-Za-z])(?=.+\d).{6,}$/g.test(value);
         },
         message: () =>
           `Password should contain atleast 6 characters (one number & one letter)`,
       },
     },
     firstname: { type: String, trim: true, required: "First name is required" },
+
     lastname: { type: String, trim: true, required: "Last name is required" },
+
     bio: { type: String, trim: true },
+
     url: { type: mongoose.SchemaTypes.Url, trim: true },
+
     location: { type: String, trim: true },
+
     profile_image_url: { type: mongoose.SchemaTypes.Url, trim: true },
+
     cover_image_url: { type: mongoose.SchemaTypes.Url, trim: true },
+
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+
     following: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   opts
