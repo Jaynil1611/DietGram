@@ -3,12 +3,25 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { extendTheme } from "@chakra-ui/react";
+import { fonts, colors } from "./utils";
+
+const theme = extendTheme({
+  colors,
+  fonts,
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ChakraProvider theme={theme}>
+      <Router>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </Router>
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
