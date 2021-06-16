@@ -1,43 +1,81 @@
-import React from "react";
-import { intialState } from "../../database/fakeData";
-import { Header } from "../index";
-import { Box, Flex, Image, Text, Button, Icon, Link } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { Box, Flex, Image, Text, Icon, Link, Button } from "@chakra-ui/react";
 import { GrLocation, BiLink } from "react-icons/all";
-import { getProfileImage } from "../../utils";
+import {
+  checkCurrentUserFollowStatus,
+  getProfileImage,
+  primaryButtonStyleProps,
+} from "../../utils";
 import EditProfile from "./EditProfile";
 import { Outlet } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  followUser,
+  getUsersStatus,
+  Header,
+  unfollowUser,
+  Loader,
+} from "../index";
+import { selectUserById } from "../users/usersSlice";
+import { selectCurrentUserId } from "../currentUser/currentUserSlice";
+import { Link as RouterLink } from "react-router-dom";
 
-function Profile() {
-  const {
-    userId: {
-      id,
-      firstname,
-      lastname,
-      username,
-      profile_image_url,
-      cover_image_url,
-      location,
-      description,
-      url,
-      followers,
-      following,
-    },
-  } = intialState.posts[0];
+function Profile({ user }) {
+  const userStatus = useSelector(getUsersStatus);
+  const currentUserId = useSelector(selectCurrentUserId);
+  const currentUser = useSelector((state) =>
+    selectUserById(state, currentUserId)
+  );
+  return (
+    <>
+      {userStatus === "loading" && <Loader />}
+      {userStatus === "fulfilled" && (
+        <ProfileCard user={user ?? currentUser} currentUserId={currentUserId} />
+      )}
+    </>
+  );
+}
+
+function ProfileCard({
+  user: {
+    id,
+    fullname,
+    username,
+    profile_image_url,
+    cover_image_url,
+    location,
+    bio,
+    url,
+    followers,
+    following,
+  },
+  currentUserId,
+}) {
+  const dispatch = useDispatch();
+  const loggedUser = useSelector((state) =>
+    selectUserById(state, currentUserId)
+  );
+
+  const followOrUnfollowUser = () => {
+    const userId = id;
+    isFollowing
+      ? dispatch(unfollowUser({ userId }))
+      : dispatch(followUser({ userId }));
+  };
+
+  const isFollowing = checkCurrentUserFollowStatus(loggedUser, id);
 
   return (
     <>
-      <Header text={`${firstname + " " + lastname}`} />
+      <Header text={`${fullname}`} />
       <Box
-        key={id}
         p={{ base: 2, sm: 3 }}
         mt={"1rem"}
         w={{ base: "100%" }}
         borderY={"1px"}
         borderColor={"gray.300"}
       >
-        <Flex>
-          <Image cursor="pointer" src={cover_image_url} alt="Cover Pic" />
+        <Flex pb={"30%"} bgColor="gray.100" w="100%">
+          <Image loading="lazy" cursor="pointer" src={cover_image_url} />
         </Flex>
         <Flex
           direction="column"
@@ -45,10 +83,10 @@ function Profile() {
           w="100%"
           px={{ base: 2, sm: 4 }}
         >
-          <Flex justify="space-between" align="center" w="100%">
+          <Flex justify="space-between" align="flex-end" w="100%">
             <Flex
               direction={"column"}
-              mt={{ sm: "-14%" }}
+              mt={{ sm: "-11%" }}
               border={"4px"}
               borderColor="white"
               borderRadius="full"
@@ -56,24 +94,35 @@ function Profile() {
               shrink={0}
             >
               <Image
+                loading="lazy"
                 cursor="pointer"
                 borderRadius="full"
-                src={getProfileImage(profile_image_url, firstname, lastname)}
+                src={getProfileImage(profile_image_url, fullname)}
                 alt="Profile"
               />
             </Flex>
-            <EditProfile />
+            {currentUserId === id ? (
+              <EditProfile />
+            ) : (
+              <Button
+                onClick={followOrUnfollowUser}
+                {...primaryButtonStyleProps}
+                maxW="max-content"
+              >
+                {isFollowing ? "Unfollow" : "Follow"}
+              </Button>
+            )}
           </Flex>
           <Flex direction="column" w="100%" my={2} wrap="wrap">
             <Text fontWeight={"extrabold"} fontSize={"1.3rem"}>
-              {firstname} {lastname}
+              {fullname}
             </Text>
             <Text fontSize={"1rem"} color={"gray.600"}>
               @{username}
             </Text>
           </Flex>
           <Flex fontSize="1rem" overflowWrap="break-word">
-            {description}
+            {bio}
           </Flex>
           <Flex wrap="wrap" my={3}>
             {location && (
@@ -91,18 +140,21 @@ function Profile() {
               </Flex>
             )}
           </Flex>
-          <Flex align="center">
-            <Text mr={2} fontWeight={"extrabold"} fontSize={"1rem"}>
-              {following.length}
-            </Text>
-            <Text mr={6} color={"gray.600"}>
-              Following
-            </Text>
-            <Text mr={2} fontWeight={"extrabold"} fontSize={"1rem"}>
-              {followers.length}
-            </Text>
-            <Text color={"gray.600"}>Followers</Text>
-          </Flex>
+          <RouterLink to={`follow`} state={{ id }}>
+            <Flex align="center">
+              <Text mr={2} fontWeight={"extrabold"} fontSize={"1rem"}>
+                {following.length}
+              </Text>
+              <Text mr={6} color={"gray.600"}>
+                Following
+              </Text>
+
+              <Text mr={2} fontWeight={"extrabold"} fontSize={"1rem"}>
+                {followers.length}
+              </Text>
+              <Text color={"gray.600"}>Followers</Text>
+            </Flex>
+          </RouterLink>
         </Flex>
       </Box>
       <Outlet />

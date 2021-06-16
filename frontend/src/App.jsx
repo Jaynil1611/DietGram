@@ -8,34 +8,45 @@ import {
   getCurrentUser,
   setToken,
   Logout,
+  CustomRoute,
+  getPosts,
+  getUsers,
+  selectToken,
+  ScrollToTop,
 } from "./features";
-import { Route, Routes } from "react-router";
-import { ScrollToTop, setupAuthHeaderForServerCalls } from "./utils";
 import "./styles.css";
-import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router";
+import {
+  getTokenFromLocalStorage,
+  setupAuthHeaderForServerCalls,
+} from "./utils";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const token = JSON.parse(localStorage.getItem("isUserLoggedIn"));
-  setupAuthHeaderForServerCalls(token);
   const dispatch = useDispatch();
+  let token = useSelector(selectToken) || getTokenFromLocalStorage();
+  setupAuthHeaderForServerCalls(token);
 
   useEffect(() => {
     (async () => {
       if (token) {
-        dispatch(getCurrentUser());
         dispatch(setToken({ token }));
+        dispatch(getCurrentUser());
+        dispatch(getUsers());
+        dispatch(getPosts());
       }
     })();
-  }, []);
+  }, [dispatch, token]);
 
   return (
     <>
       <Navbar />
       <ScrollToTop />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <PrivateRoute path="/*" element={<Home />} />
+        <CustomRoute path="/login" element={<Login />} />
+        <CustomRoute path="/signup" element={<SignUp />} />
+        <PrivateRoute path="/" element={<Home />} />
+        <Route path="/*" element={<Home />} />
         <PrivateRoute path="/logout" element={<Logout />} />
       </Routes>
     </>
