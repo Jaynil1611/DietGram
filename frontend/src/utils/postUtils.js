@@ -1,10 +1,9 @@
 import { parseISO, formatDistanceToNowStrict } from "date-fns";
 
-export const getProfileImage = (url, firstname, lastname) => {
-  return (
-    url ??
-    `https://ui-avatars.com/api/?name=${firstname}+${lastname}&rounded=true&background=fd7014&color=fff&size=32`
-  );
+export const getProfileImage = (url, fullname) => {
+  return url && url.length > 0
+    ? url
+    : `https://ui-avatars.com/api/?name=${fullname}&rounded=true&background=fd7014&color=fff&size=32`;
 };
 
 const timeMap = {
@@ -12,7 +11,10 @@ const timeMap = {
   minutes: "m",
   hours: "h",
   days: "d",
+  day: "d",
   months: "mo",
+  month: "mo",
+  year: "y",
   years: "y",
 };
 
@@ -44,3 +46,17 @@ export const getDate = (timestamp) => {
 };
 
 export const showBackButton = (back) => !(back === false);
+
+export const checkPostAndUserStatus = (state) => {
+  const postStatus = state.posts.status;
+  const userStatus = state.users.status;
+  return postStatus === "fulfilled" && userStatus === "fulfilled"
+    ? "fulfilled"
+    : postStatus === "loading" || userStatus === "loading"
+    ? "loading"
+    : "rejected";
+};
+
+export const checkLikeStatus = (reactedUsers, userId) => {
+  return reactedUsers.find((user) => user.id === userId) ? true : false;
+};

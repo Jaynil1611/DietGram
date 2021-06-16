@@ -16,47 +16,40 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { primaryButtonStyleProps } from "../../utils";
-import { MdAddCircle } from "react-icons/all";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserStatus, selectCurrentUser, Loader } from "../index";
-import { addPost } from "./postsSlice";
+import { editPost } from "./postsSlice";
+import { useNavigate } from "react-router";
 
-function NewPost() {
+function EditPost({ post }) {
   const status = useSelector(getCurrentUserStatus);
   return (
     <>
       {status === "loading" && <Loader />}
-      {status === "fulfilled" && <NewPostModal />}
+      {status === "fulfilled" && <EditPostModal {...post} />}
     </>
   );
 }
 
-function NewPostModal() {
+function EditPostModal({ id, content }) {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const initialRef = useRef();
   const dispatch = useDispatch();
-  const {
-    id: userId,
-    username,
-    profile_image_url,
-  } = useSelector(selectCurrentUser);
+  const { profile_image_url } = useSelector(selectCurrentUser);
+  const navigate = useNavigate();
 
   const postSubmit = () => {
     dispatch(
-      addPost({ post: { content: initialRef.current.value, userId, username } })
+      editPost({
+        post: { id, content: initialRef.current.value },
+      })
     );
-    onClose();
+    navigate("/");
   };
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        leftIcon={<MdAddCircle size={"1.8rem"} />}
-        {...primaryButtonStyleProps}
-      >
-        Add Post
-      </Button>
+      <Box onClick={onOpen}>Edit Post</Box>
       <Modal
         initialFocusRef={initialRef}
         isOpen={isOpen}
@@ -85,6 +78,7 @@ function NewPostModal() {
                     ref={initialRef}
                     height={"8rem"}
                     resize={"none"}
+                    defaultValue={content}
                     border={"0px"}
                     _focus={{
                       border: "0px",
@@ -109,7 +103,7 @@ function NewPostModal() {
                 {...primaryButtonStyleProps}
                 p={3}
               >
-                Post
+                Save
               </Button>
             </Flex>
           </ModalFooter>
@@ -119,4 +113,4 @@ function NewPostModal() {
   );
 }
 
-export default NewPost;
+export default EditPost;

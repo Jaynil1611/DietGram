@@ -18,7 +18,14 @@ function Navbar() {
   const [isDesktopMode] = useMediaQuery("(min-width: 648px)");
 
   return (
-    <Box position="sticky" top="0" zIndex={10} boxShadow="md" rounded="lg">
+    <Box
+      position="sticky"
+      overflow="hidden"
+      top="0"
+      zIndex={10}
+      boxShadow="md"
+      rounded="lg"
+    >
       <Flex
         p={"0.5rem 1rem"}
         bg={"white"}

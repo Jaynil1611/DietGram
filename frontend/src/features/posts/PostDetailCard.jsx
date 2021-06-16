@@ -1,5 +1,3 @@
-import React from "react";
-import { intialState } from "../../database/fakeData";
 import {
   Box,
   Flex,
@@ -10,6 +8,8 @@ import {
   Menu,
   MenuButton,
   IconButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import {
   IoMdHeartEmpty,
@@ -19,20 +19,62 @@ import {
   IoShareSocialOutline,
   BsThreeDots,
 } from "react-icons/all";
-import { getDate, getProfileImage } from "../../utils/postUtils";
-import { Outlet } from "react-router";
-import Header from "./Header";
-import { BeautifyContent } from "../../utils";
+import {
+  checkLikeStatus,
+  checkPostAndUserStatus,
+  getDate,
+  getProfileImage,
+} from "../../utils";
+import { Outlet, useNavigate, useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPostById,
+  BeautifyContent,
+  Header,
+  Loader,
+  selectUserById,
+  selectCurrentUserId,
+} from "../index";
+import EditPost from "./EditPost";
+import { deletePost } from "./postsSlice";
 
 function PostDetailCard() {
+  const { postId } = useParams();
+  const status = useSelector(checkPostAndUserStatus);
+  return (
+    <>
+      {status !== "fulfilled" && <Loader />}
+      {status === "fulfilled" && <PostDetailCardView postId={postId} />}
+    </>
+  );
+}
+
+function PostDetailCardView({ postId }) {
   const {
     id,
-    userId: { firstname, lastname, username, profile_image_url },
+    userId,
     content,
     createdAt,
-    likes: { count, reactors },
-  } = intialState.posts[0];
+    likes: { count, reactedUsers },
+  } = useSelector((state) => selectPostById(state, postId));
 
+  const { fullname, username, profile_image_url } = useSelector((state) =>
+    selectUserById(state, userId)
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const currentUserId = useSelector(selectCurrentUserId);
+
+  const getLikeStatus = () => {
+    return checkLikeStatus(reactedUsers, currentUserId)
+      ? IoMdHeart
+      : IoMdHeartEmpty;
+  };
+
+  const removePost = () => {
+    dispatch(deletePost({ post: { id } }));
+    navigate("/");
+  };
   return (
     <>
       <Header text={"Post"} />
@@ -44,12 +86,13 @@ function PostDetailCard() {
         borderY={"1px"}
         borderColor={"gray.300"}
       >
-        <Flex direction={"column"} shrink={1}>
+        <Flex direction={"column"}>
           <Flex>
             <Flex direction={"column"} basis={"48px"} mr={3} shrink={0}>
               <Image
+                loading="lazy"
                 borderRadius="full"
-                src={getProfileImage(profile_image_url, firstname, lastname)}
+                src={getProfileImage(profile_image_url, fullname)}
                 alt="Profile"
               />
             </Flex>
@@ -57,27 +100,36 @@ function PostDetailCard() {
               <Flex justify={"space-between"}>
                 <Flex justify={"center"} direction={"column"}>
                   <Text fontWeight={"bold"} fontSize={"1.2rem"}>
-                    {firstname} {lastname}
+                    {fullname}
                   </Text>
                   <Text fontSize={"1rem"} color={"gray.600"}>
                     @{username}
                   </Text>
                 </Flex>
-                <Menu>
-                  <MenuButton
-                    as={IconButton}
-                    aria-label="Options"
-                    icon={<BsThreeDots />}
-                    variant="outline"
-                  ></MenuButton>
-                </Menu>
+                {currentUserId === userId && (
+                  <Menu>
+                    <MenuButton
+                      as={IconButton}
+                      aria-label="Options"
+                      icon={<BsThreeDots />}
+                      variant="outline"
+                    />
+                    <MenuList>
+                      <MenuItem closeOnSelect={false}>
+                        <EditPost post={{ id, content }} />
+                      </MenuItem>
+                      <MenuItem color="acccent.700" onClick={removePost}>
+                        Delete Post
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                )}
               </Flex>
             </Flex>
           </Flex>
           <Flex
             my={3}
             className="content"
-            justify={"center"}
             fontSize={"1.1rem"}
             overflowWrap={"break-word"}
           >
@@ -96,7 +148,12 @@ function PostDetailCard() {
             ml={3}
           >
             <Flex align={"center"}>
-              <Icon boxSize="1.5rem" as={IoMdHeartEmpty} cursor={"pointer"} />
+              <Icon
+                boxSize="1.5rem"
+                color="accent.500"
+                as={getLikeStatus()}
+                cursor={"pointer"}
+              />
               <Text px={2}>{count}</Text>
             </Flex>
             <Icon boxSize="1.5rem" as={IoBookmarkOutline} cursor={"pointer"} />
