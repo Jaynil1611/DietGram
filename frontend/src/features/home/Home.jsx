@@ -1,14 +1,16 @@
-import React from "react";
 import {
   PostListing,
   DesktopNav,
   PostDetailCard,
-  Profile,
   NotificationList,
   Updates,
   PrivateRoute,
+  Follow,
+  Timeline,
+  NotFound,
+  Bookmark,
 } from "../index";
-import { Routes } from "react-router";
+import { Route, Routes } from "react-router";
 import { Box, SimpleGrid } from "@chakra-ui/layout";
 import { useMediaQuery } from "@chakra-ui/media-query";
 
@@ -31,13 +33,16 @@ function Home() {
       >
         <Box borderX={"1px solid"} borderColor={"gray.300"}>
           <Routes>
-            <PrivateRoute path="/posts/:postId" element={<PostDetailCard />} />
-            <PrivateRoute path="/" element={<PostListing />} />
-            <PrivateRoute path="/profile" element={<Profile />} />
-            <PrivateRoute
-              path="/notifications"
-              element={<NotificationList />}
-            />
+            <PrivateRoute path="posts/:postId" element={<PostDetailCard />} />
+            <PrivateRoute path="" element={<PostListing />} />
+            <PrivateRoute path="profile" element={<Timeline />} />
+            <PrivateRoute path=":username" element={<Timeline />} />
+            <PrivateRoute path="notifications" element={<NotificationList />} />
+            <PrivateRoute path="profile/follow" element={<Follow />} />
+            <PrivateRoute path=":username/follow" element={<Follow />} />
+            <PrivateRoute path="/saved" element={<Bookmark />} />
+            <Route path="/notfound" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
         {showUpdates && (

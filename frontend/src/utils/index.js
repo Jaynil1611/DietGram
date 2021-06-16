@@ -1,5 +1,4 @@
 export { colors, fonts } from "./theme";
-export { default as ScrollToTop } from "./ScrollToTop";
 export { menuList } from "./navbarUtils";
 export {
   buttonFocusProps,
@@ -15,6 +14,16 @@ export {
   getFormValues,
   validateForm,
   storeToken,
+  getTokenFromLocalStorage,
 } from "./loginUtils";
-export { getProfileImage, getTime, getDate, showBackButton } from "./postUtils";
-export { default as BeautifyContent } from "./BeautifyContent";
+export {
+  getProfileImage,
+  getTime,
+  getDate,
+  showBackButton,
+  checkPostAndUserStatus,
+  checkLikeStatus,
+} from "./postUtils";
+export { checkCurrentUserFollowStatus } from "./userUtils";
+export { getIcon, getText, getColor } from "./notificationUtils";
+export { getSearchResults, checkSearchQuery } from "./searchUtils";
