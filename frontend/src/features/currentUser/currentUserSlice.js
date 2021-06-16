@@ -4,11 +4,11 @@ import {
   loginUserService,
   signUpUserService,
   getCurrentUserService,
-} from "./loginService";
+} from "./currentUserService";
 
 const initialState = {
   currentUser: null,
-  status: { currentUser: "idle" },
+  status: "idle",
   token: null,
   error: null,
 };
@@ -43,19 +43,27 @@ const currentUserSlice = createSlice({
       storeToken(payload.token);
     },
     [getCurrentUser.pending]: (state, { payload }) => {
-      state.status.currentUser = "loading";
+      state.status = "loading";
     },
     [getCurrentUser.fulfilled]: (state, { payload }) => {
       state.currentUser = payload.user;
-      state.status.currentUser = "fulfilled";
-      state.error = null;
+      state.status = "fulfilled";
     },
     [getCurrentUser.rejected]: (state, { payload }) => {
-      state.status.currentUser = "error";
+      state.status = "rejected";
       state.error = payload;
     },
   },
 });
+
+export const selectCurrentUserId = ({ currentUser }) =>
+  currentUser.currentUser.id;
+
+export const selectCurrentUser = ({ currentUser }) => currentUser.currentUser;
+
+export const getCurrentUserStatus = ({ currentUser }) => currentUser.status;
+
+export const selectToken = ({ currentUser }) => currentUser.token;
 
 export const { setToken } = currentUserSlice.actions;
 

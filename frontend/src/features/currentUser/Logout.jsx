@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { setToken } from "./loginSlice";
+import { setToken } from "./currentUserSlice";
 
 function Logout() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function Logout() {
     dispatch(setToken({ token: null }));
     localStorage.removeItem("isUserLoggedIn");
     navigate("/login");
-  }, []);
+  }, [dispatch, navigate]);
 
   return <></>;
 }

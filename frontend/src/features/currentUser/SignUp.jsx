@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Image } from "@chakra-ui/image";
 import {
   Flex,
@@ -23,7 +22,7 @@ import {
   validateForm,
 } from "../../utils";
 import { useDispatch } from "react-redux";
-import { signUpUser } from "./loginSlice";
+import { signUpUser } from "./currentUserSlice";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -34,7 +33,7 @@ function SignUp() {
     const { email, password, confirmPassword, ...rest } = getFormValues(
       e,
       "signup"
-    );   
+    );
     if (validateForm({ email, password, confirmPassword })) {
       return dispatch(signUpUser({ email, password, ...rest })).then(() =>
         navigate("/login")
@@ -51,7 +50,7 @@ function SignUp() {
       >
         <Flex justify={"center"} align={"center"}>
           <Image
-            loading={"eager"}
+            loading={"lazy"}
             src={SignUpImage}
             alt="SignUp"
             width={"100%"}

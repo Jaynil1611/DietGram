@@ -1,15 +1,14 @@
-import { useSelector } from "react-redux";
 import { Navigate, Route } from "react-router";
+import { getTokenFromLocalStorage } from "../../utils";
 
 function PrivateRoute({ path, element }) {
-  const token = useSelector((state) => state.currentUser.token);
-
+  const token = getTokenFromLocalStorage();
   return (
     <>
       {token ? (
-        <Route path={path} element={element} />
+        <Route exact path={path} element={element} />
       ) : (
-        <Navigate to="/login" />
+        <Navigate state={{ from: path }} replace to="/login" />
       )}
     </>
   );

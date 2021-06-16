@@ -42,7 +42,11 @@ export const checkEmail = (email) =>
 export const checkPassword = (password) =>
   /^(?=.+[A-Za-z])(?=.+\d).{6,}$/g.test(password);
 
-export const validateForm = ({ email, password, confirmPassword = undefined }) => {
+export const validateForm = ({
+  email,
+  password,
+  confirmPassword = undefined,
+}) => {
   if (!checkEmail(email)) {
     showToast("Email is incomplete", "error");
     return false;
@@ -85,6 +89,24 @@ export const getFormValues = (e, type) => {
         confirmPassword,
       };
     }
+    case "profile": {
+      const {
+        name: { value: name },
+        bio: { value: bio },
+        location: { value: location },
+        url: { value: url },
+        profile_image_url: { value: profile_image_url },
+        cover_image_url: { value: cover_image_url },
+      } = e.target;
+      return {
+        name,
+        bio,
+        location,
+        url,
+        profile_image_url,
+        cover_image_url,
+      };
+    }
     default:
       return new Error("Invalid Choice");
   }
@@ -93,3 +115,6 @@ export const getFormValues = (e, type) => {
 export const storeToken = (token) => {
   localStorage.setItem("isUserLoggedIn", JSON.stringify(token));
 };
+
+export const getTokenFromLocalStorage = () =>
+  JSON.parse(localStorage.getItem("isUserLoggedIn"));

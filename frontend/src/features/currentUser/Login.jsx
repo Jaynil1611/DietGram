@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Image } from "@chakra-ui/image";
 import {
   Flex,
@@ -23,7 +22,7 @@ import {
   validateForm,
 } from "../../utils";
 import { useDispatch } from "react-redux";
-import { loginUser } from "./loginSlice";
+import { loginUser } from "./currentUserSlice";
 
 function Login() {
   const dispatch = useDispatch();
@@ -47,7 +46,7 @@ function Login() {
       >
         <Flex justify={"center"} align={"center"}>
           <Image
-            loading={"eager"}
+            loading={"lazy"}
             src={LoginImage}
             alt="Login"
             width={"100%"}

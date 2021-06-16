@@ -1,6 +1,5 @@
 import {
   BiHomeCircle,
-  BiLogIn,
   BiUser,
   BiBookmark,
   BiLogOut,
