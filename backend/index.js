@@ -4,7 +4,6 @@ const compression = require("compression");
 const dotenv = require("dotenv");
 
 const { initializeDBConnection } = require("./db/db.connect");
-
 const userRouter = require("./routes/user.router");
 const loginRouter = require("./routes/login.router");
 const postRouter = require("./routes/post.router");
