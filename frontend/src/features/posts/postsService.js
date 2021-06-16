@@ -25,11 +25,6 @@ export const deletePostService = async ({ post }) => {
   return response.data;
 };
 
-export const getUserPostsByNameService = async (username) => {
-  const response = await axios.get(`${constructURL()}/posts/user/${username}`);
-  return response.data;
-};
-
 export const likeService = async ({ id }) => {
   const response = await axios.post(`${constructURL()}/posts/${id}/likes`);
   return response.data;

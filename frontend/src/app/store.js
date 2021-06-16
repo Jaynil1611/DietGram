@@ -3,7 +3,6 @@ import {
   currentUserReducer,
   notificationsReducer,
   postReducer,
-  userPostReducer,
   userReducer,
 } from "../features";
 
@@ -12,7 +11,6 @@ export const store = configureStore({
     currentUser: currentUserReducer,
     posts: postReducer,
     users: userReducer,
-    userPosts: userPostReducer,
     notifications: notificationsReducer,
   },
 });

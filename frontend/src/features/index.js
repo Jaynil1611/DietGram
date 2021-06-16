@@ -58,13 +58,6 @@ export {
   selectUserSuggestions,
 } from "./users/usersSlice";
 export {
-  selectAllUserPosts,
-  selectUserNames,
-  selectUserPostByName,
-  getUserPostsByName,
-  default as userPostReducer,
-} from "./posts/userPostsSlice";
-export {
   getNotifications,
   selectAllNotifications,
   default as notificationsReducer,
