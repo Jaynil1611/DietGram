@@ -1,5 +1,4 @@
 import React from "react";
-import Search from "./Search";
 import {
   Flex,
   Text,
@@ -10,24 +9,18 @@ import {
   Button,
   Tag,
 } from "@chakra-ui/react";
-import { intialState } from "../../database/fakeData";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserSuggestions, Search } from "../index";
+import {
+  checkCurrentUserFollowStatus,
+  checkPostAndUserStatus,
+  getProfileImage,
+} from "../../utils";
+import { followUser, selectUserById } from "../users/usersSlice";
+import { selectCurrentUserId } from "../currentUser/currentUserSlice";
 
 function Updates() {
-  const {
-    userId: {
-      id,
-      firstname,
-      lastname,
-      username,
-      profile_image_url,
-      cover_image_url,
-      location,
-      description,
-      url,
-      followers,
-      following,
-    },
-  } = intialState.posts[0];
+  const status = useSelector(checkPostAndUserStatus);
   return (
     <>
       <Search />
@@ -49,6 +42,7 @@ function Updates() {
           >
             <Flex shrink="0">
               <Image
+                loading="lazy"
                 h="68px"
                 w="68px"
                 borderRadius="1rem"
@@ -69,49 +63,90 @@ function Updates() {
         <Heading mb={4} size="md" fontWeight="extrabold">
           Who to follow
         </Heading>
-        <Link to="" _hover={{ textDecoration: "none" }}>
-          <Box py={2} borderY="1px solid" borderColor="gray.300">
-            <Flex justify="space-around" wrap="wrap">
-              <Flex direction="column" shrink="0" basis="48px">
-                <Image
-                  borderRadius="full"
-                  src={profile_image_url}
-                  alt="Profile"
-                />
-              </Flex>
-              <Flex direction="column" wrap="wrap">
-                <Text
-                  fontWeight={"extrabold"}
-                  _hover={{ textDecoration: "underline" }}
-                >
-                  {firstname + " " + lastname}
-                </Text>
-                <Flex align="center">
-                  <Text
-                    fontSize={"1rem"}
-                    color={"gray.600"}
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                    w="100px"
-                    mr={2}
-                  >
-                    @{username}
-                  </Text>
-                  <Tag p={1}>Follows you</Tag>
-                </Flex>
-              </Flex>
-              <Flex align="center">
-                <Button borderRadius="full" p={4}>
-                  Follow
-                </Button>
-              </Flex>
-            </Flex>
-          </Box>
-        </Link>
+        {status === "fulfilled" && <PeopleCard />}
       </Flex>
     </>
   );
 }
+
+export const PeopleCard = () => {
+  const dispatch = useDispatch();
+  const currentUserId = useSelector(selectCurrentUserId);
+  const currentUser = useSelector((state) =>
+    selectUserById(state, currentUserId)
+  );
+  const users = useSelector((state) =>
+    selectUserSuggestions(state, currentUserId)
+  );
+
+  const follow = (id) => {
+    const userId = id;
+    dispatch(followUser({ userId }));
+  };
+
+  const checkFollowing = (id) => checkCurrentUserFollowStatus(currentUser, id);
+
+  return (
+    <>
+      {users.map(({ username, fullname, profile_image_url, id, following }) => {
+        const isFollowing = checkFollowing(id);
+        return (
+          <>
+            {!isFollowing && (
+              <Link to="" _hover={{ textDecoration: "none" }}>
+                <Box py={2} borderY="1px solid" borderColor="gray.300">
+                  <Flex justify="space-around" wrap="wrap">
+                    <Flex direction="column" shrink="0" basis="48px">
+                      <Image
+                        loading="lazy"
+                        borderRadius="full"
+                        src={getProfileImage(profile_image_url, fullname)}
+                        alt="Profile"
+                      />
+                    </Flex>
+                    <Flex direction="column" wrap="wrap">
+                      <Text
+                        fontWeight={"extrabold"}
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        {fullname}
+                      </Text>
+                      <Flex align="center">
+                        <Text
+                          fontSize={"1rem"}
+                          color={"gray.600"}
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                          w="100px"
+                          mr={2}
+                        >
+                          @{username}
+                        </Text>
+                        {checkCurrentUserFollowStatus(
+                          { following },
+                          currentUser.id
+                        ) && <Tag p={1}> Follows you</Tag>}
+                      </Flex>
+                    </Flex>
+                    <Flex align="center">
+                      <Button
+                        onClick={() => follow(id)}
+                        borderRadius="full"
+                        p={4}
+                      >
+                        Follow
+                      </Button>
+                    </Flex>
+                  </Flex>
+                </Box>
+              </Link>
+            )}
+          </>
+        );
+      })}
+    </>
+  );
+};
 
 export default Updates;
