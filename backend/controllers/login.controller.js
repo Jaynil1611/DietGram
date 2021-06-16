@@ -5,9 +5,7 @@ const jwt = require("jsonwebtoken");
 const verifyUserCredentials = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email }).select(
-      "+password -followers -following -__v"
-    );
+    const user = await User.findOne({ email }).select("+password -__v");
     if (!user) {
       return res
         .status(401)
@@ -22,6 +20,7 @@ const verifyUserCredentials = async (req, res, next) => {
         },
         process.env["SECRET"]
       );
+      user.password = undefined;
       return res.status(201).json({ success: true, token, user });
     }
 

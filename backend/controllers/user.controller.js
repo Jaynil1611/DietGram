@@ -1,6 +1,7 @@
 const { User } = require("../models/user.model");
 const { extend } = require("lodash");
 const bcrypt = require("bcrypt");
+const { Notification } = require("../models/notifications.model");
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -74,7 +75,7 @@ const updateUserDetails = async (req, res, next) => {
 
 const getFollowLists = async (req, res, next) => {
   try {
-    const { userId } = req;
+    const { userId } = req.params;
     const followList = await User.findById(userId)
       .populate("following")
       .populate("followers")
@@ -102,6 +103,7 @@ const followUser = async (req, res, next) => {
     await currentUser.save();
     await followedUser.save();
     res.status(201).json({ success: true, followedUser, user: currentUser });
+    createNotificationForFollow(userId, followedUserId);
   } catch (error) {
     next(error);
   }
@@ -126,6 +128,19 @@ const unfollowUser = async (req, res, next) => {
     res.status(201).json({ success: true, unfollowedUser, user: currentUser });
   } catch (error) {
     next(error);
+  }
+};
+
+const createNotificationForFollow = async (userId, followedUserId) => {
+  try {
+    const newNotification = {
+      type: "Follow",
+      originUser: userId,
+      destination: followedUserId,
+    };
+    Notification.create(newNotification);
+  } catch (error) {
+    return new Error("Follow notification failed!");
   }
 };
 

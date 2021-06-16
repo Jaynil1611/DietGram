@@ -1,9 +1,8 @@
 const { Post } = require("../models/post.model");
-const { User } = require("../models/user.model");
 
 const getPostById = async (req, res, next, postId) => {
   try {
-    const post = await Post.findById(postId).populate("userId").select("-__v");
+    const post = await Post.findById(postId).select("-__v");
     if (!post) {
       return res
         .status(400)

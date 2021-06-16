@@ -8,6 +8,7 @@ const { initializeDBConnection } = require("./db/db.connect");
 const userRouter = require("./routes/user.router");
 const loginRouter = require("./routes/login.router");
 const postRouter = require("./routes/post.router");
+const notificationRouter = require("./routes/notification.router");
 
 const { pathNotFoundHandler } = require("./middlewares/pathNotFoundHandler");
 const { errorHandler } = require("./middlewares/errorHandler");
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 app.use("/login", loginRouter);
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
+app.use("/notifications", notificationRouter);
 
 app.use(pathNotFoundHandler);
 app.use(errorHandler);

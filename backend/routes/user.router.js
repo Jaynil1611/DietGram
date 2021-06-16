@@ -18,10 +18,9 @@ router
   .get(authHandler, getUserDetails)
   .post(authHandler, updateUserDetails);
 
-router
-  .route("/user/follow")
-  .get(authHandler, getFollowLists)
-  .post(authHandler, followUser);
+router.route("/user/follow").post(authHandler, followUser);
+
+router.route("/:userId/follow").get(authHandler, getFollowLists);
 
 router.route("/user/unfollow").post(authHandler, unfollowUser);
 
