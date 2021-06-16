@@ -22,7 +22,7 @@ function Navbar() {
       position="sticky"
       overflow="hidden"
       top="0"
-      zIndex={10}
+      zIndex={2}
       boxShadow="md"
       rounded="lg"
     >
