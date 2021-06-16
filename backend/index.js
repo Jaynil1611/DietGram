@@ -23,7 +23,7 @@ dotenv.config();
 initializeDBConnection();
 
 app.get("/", (req, res) => {
-  res.json("Welcome to Dietify Quiz");
+  res.json("Welcome to Diet Gram");
 });
 
 app.use("/login", loginRouter);
