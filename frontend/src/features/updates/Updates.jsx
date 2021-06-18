@@ -4,10 +4,10 @@ import {
   Text,
   Heading,
   Image,
-  Link,
   Box,
   Button,
   Tag,
+  Link,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserSuggestions, Search } from "../index";
@@ -18,6 +18,7 @@ import {
 } from "../../utils";
 import { followUser, selectUserById } from "../users/usersSlice";
 import { selectCurrentUserId } from "../currentUser/currentUserSlice";
+import { Link as RouterLink } from "react-router-dom";
 
 function Updates() {
   const status = useSelector(checkPostAndUserStatus);
@@ -93,18 +94,18 @@ export const PeopleCard = () => {
         return (
           <>
             {!isFollowing && (
-              <Link to="" _hover={{ textDecoration: "none" }}>
-                <Box py={2} borderY="1px solid" borderColor="gray.300">
-                  <Flex justify="space-around" wrap="wrap">
-                    <Flex direction="column" shrink="0" basis="48px">
-                      <Image
-                        loading="lazy"
-                        borderRadius="full"
-                        src={getProfileImage(profile_image_url, fullname)}
-                        alt="Profile"
-                      />
-                    </Flex>
-                    <Flex direction="column" wrap="wrap">
+              <Box my={1} py={2} borderY="1px solid" borderColor="gray.300">
+                <Flex wrap="wrap">
+                  <Flex direction="column" shrink="0" basis="48px">
+                    <Image
+                      loading="lazy"
+                      borderRadius="full"
+                      src={getProfileImage(profile_image_url, fullname)}
+                      alt="Profile"
+                    />
+                  </Flex>
+                  <RouterLink to={`/${username}`}>
+                    <Flex ms={4} direction="column" wrap="wrap">
                       <Text
                         fontWeight={"extrabold"}
                         _hover={{ textDecoration: "underline" }}
@@ -126,21 +127,21 @@ export const PeopleCard = () => {
                         {checkCurrentUserFollowStatus(
                           { following },
                           currentUser.id
-                        ) && <Tag p={1}> Follows you</Tag>}
+                        ) && <Tag p={1} me={3}> Follows you</Tag>}
                       </Flex>
                     </Flex>
-                    <Flex align="center">
-                      <Button
-                        onClick={() => follow(id)}
-                        borderRadius="full"
-                        p={4}
-                      >
-                        Follow
-                      </Button>
-                    </Flex>
+                  </RouterLink>
+                  <Flex align="center">
+                    <Button
+                      onClick={() => follow(id)}
+                      borderRadius="full"
+                      p={4}
+                    >
+                      Follow
+                    </Button>
                   </Flex>
-                </Box>
-              </Link>
+                </Flex>
+              </Box>
             )}
           </>
         );

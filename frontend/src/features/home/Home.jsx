@@ -9,6 +9,7 @@ import {
   Timeline,
   NotFound,
   Bookmark,
+  Hashtag,
 } from "../index";
 import { Route, Routes } from "react-router";
 import { Box, SimpleGrid } from "@chakra-ui/layout";
@@ -40,6 +41,7 @@ function Home() {
             <PrivateRoute path="notifications" element={<NotificationList />} />
             <PrivateRoute path="profile/follow" element={<Follow />} />
             <PrivateRoute path=":username/follow" element={<Follow />} />
+            <PrivateRoute path="/hashtag/:name" element={<Hashtag />} />
             <PrivateRoute path="/saved" element={<Bookmark />} />
             <Route path="/notfound" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />

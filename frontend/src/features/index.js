@@ -22,6 +22,7 @@ export { default as NotFound } from "./extras/NotFound";
 export { default as ScrollToTop } from "./extras/ScrollToTop";
 export { default as Search } from "./search/Search";
 export { default as Bookmark } from "./bookmarks/Bookmark";
+export { default as Hashtag } from "./search/Hashtag";
 export {
   getCurrentUser,
   setToken,

@@ -4,7 +4,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { showToast } from "../toasts/Toast";
+import { showToast } from "../index";
 import {
   addPostService,
   deletePostService,
@@ -23,7 +23,7 @@ export const deletePost = createAsyncThunk(
 export const updateLikes = createAsyncThunk("posts/updateLikes", likeService);
 
 const postsAdapter = createEntityAdapter({
-  sortComparer: (a, b) => b.updatedAt.localeCompare(a.updatedAt),
+  sortComparer: (a, b) => b.createdAt.localeCompare(a.createdAt),
 });
 
 const initialState = postsAdapter.getInitialState({
@@ -51,19 +51,32 @@ const postsSlice = createSlice({
     [getPosts.rejected]: (state, action) => {
       state.status = "rejected";
       state.error = "Unable to fetch posts!";
+      showToast("Unable to fetch posts!", "error");
     },
     [addPost.fulfilled]: (state, { payload }) => {
       postsAdapter.upsertOne(state, payload.post);
       showToast("Post added", "success");
     },
+    [addPost.rejected]: (state, { payload }) => {
+      showToast("Couldn't create post", "error");
+    },
     [editPost.fulfilled]: (state, { payload }) => {
       postsAdapter.upsertOne(state, payload.post);
+    },
+    [editPost.rejected]: (state, { payload }) => {
+      showToast("Couldn't edit post", "error");
     },
     [deletePost.fulfilled]: (state, { payload }) => {
       postsAdapter.removeOne(state, payload.post.id);
     },
+    [deletePost.rejected]: (state, { payload }) => {
+      showToast("Couldn't delete post", "error");
+    },
     [updateLikes.fulfilled]: (state, { payload }) => {
       postsAdapter.upsertOne(state, payload.post);
+    },
+    [updateLikes.rejected]: (state, { payload }) => {
+      showToast("Couldn't like the post", "error");
     },
   },
 });

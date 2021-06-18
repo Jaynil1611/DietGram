@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { storeToken } from "../../utils";
+import { showToast } from "../index";
 import {
   loginUserService,
   signUpUserService,
@@ -37,10 +38,16 @@ const currentUserSlice = createSlice({
     },
   },
   extraReducers: {
+    [loginUser.pending]: (state, { payload }) => {
+      showToast("Checking user credentials...", "info");
+    },
     [loginUser.fulfilled]: (state, { payload }) => {
       state.currentUser = payload.user;
       state.token = payload.token;
       storeToken(payload.token);
+    },
+    [loginUser.rejected]: (state, { payload }) => {
+      showToast("User doesn't exist", "error");
     },
     [getCurrentUser.pending]: (state, { payload }) => {
       state.status = "loading";
@@ -52,6 +59,7 @@ const currentUserSlice = createSlice({
     [getCurrentUser.rejected]: (state, { payload }) => {
       state.status = "rejected";
       state.error = payload;
+      showToast("Couldn't fetch user details!", "error");
     },
   },
 });

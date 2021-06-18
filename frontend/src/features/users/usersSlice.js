@@ -4,6 +4,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
+import { showToast } from "../index";
 import {
   followUserService,
   getFollowService,
@@ -59,22 +60,34 @@ const usersSlice = createSlice({
     },
     [getUsers.rejected]: (state, { payload }) => {
       state.status = "rejected";
-      state.error = payload.errorMessage;
+      showToast("Couldn't fetch users", "error");
     },
     [followUser.fulfilled]: (state, { payload }) => {
       usersAdapter.upsertOne(state, payload.user);
       usersAdapter.upsertOne(state, payload.followedUser);
     },
+    [followUser.rejected]: (state, { payload }) => {
+      showToast("Couldn't follow user", "error");
+    },
     [unfollowUser.fulfilled]: (state, { payload }) => {
       usersAdapter.upsertOne(state, payload.user);
       usersAdapter.upsertOne(state, payload.unfollowedUser);
     },
+    [unfollowUser.rejected]: (state, { payload }) => {
+      showToast("Couldn't unfollow user", "error");
+    },
     [updateUser.fulfilled]: (state, { payload }) => {
       usersAdapter.upsertOne(state, payload.user);
+    },
+    [updateUser.rejected]: (state, { payload }) => {
+      showToast("Couldn't update user details", "error");
     },
     [getFollow.fulfilled]: (state, { payload }) => {
       state.followStatus = "fulfilled";
       usersAdapter.upsertOne(state, payload.followList);
+    },
+    [getFollow.rejected]: (state, { payload }) => {
+      showToast("Couldn't fetch follow details", "error");
     },
   },
 });
@@ -101,7 +114,5 @@ export const selectUserByName = createSelector(
   (users, username) =>
     users.filter((user) => user.username === username).slice(0, 5)
 );
-
-// You will find user object from here and then dispatch(getUserPostsByName()) and then upsert many in posts and then filter them in postlisting
 
 export default usersSlice.reducer;

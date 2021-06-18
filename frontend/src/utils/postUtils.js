@@ -8,8 +8,11 @@ export const getProfileImage = (url, fullname) => {
 
 const timeMap = {
   seconds: "s",
+  second: "s",
   minutes: "m",
+  minute: "m",
   hours: "h",
+  hour: "h",
   days: "d",
   day: "d",
   months: "mo",

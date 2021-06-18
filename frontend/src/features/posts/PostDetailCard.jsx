@@ -37,6 +37,7 @@ import {
 } from "../index";
 import EditPost from "./EditPost";
 import { deletePost } from "./postsSlice";
+import { Link } from "react-router-dom";
 
 function PostDetailCard() {
   const { postId } = useParams();
@@ -98,14 +99,16 @@ function PostDetailCardView({ postId }) {
             </Flex>
             <Flex direction={"column"} w={"100%"}>
               <Flex justify={"space-between"}>
-                <Flex justify={"center"} direction={"column"}>
-                  <Text fontWeight={"bold"} fontSize={"1.2rem"}>
-                    {fullname}
-                  </Text>
-                  <Text fontSize={"1rem"} color={"gray.600"}>
-                    @{username}
-                  </Text>
-                </Flex>
+                <Link to={`/${username}`}>
+                  <Flex justify={"center"} direction={"column"}>
+                    <Text fontWeight={"bold"} fontSize={"1.2rem"}>
+                      {fullname}
+                    </Text>
+                    <Text fontSize={"1rem"} color={"gray.600"}>
+                      @{username}
+                    </Text>
+                  </Flex>
+                </Link>
                 {currentUserId === userId && (
                   <Menu>
                     <MenuButton

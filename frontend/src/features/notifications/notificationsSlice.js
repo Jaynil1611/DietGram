@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
+import { showToast } from "../index";
 import { getNotificationsService } from "./notificationsService";
 
 export const getNotifications = createAsyncThunk(
@@ -35,6 +36,9 @@ export const notificationsSlice = createSlice({
     [getNotifications.fulfilled]: (state, { payload }) => {
       state.status = "fulfilled";
       notificationsAdapter.upsertMany(state, payload.notifications);
+    },
+    [getNotifications.rejected]: (state, { payload }) => {
+      showToast("Couldn't fetch user notifications", "error");
     },
   },
 });

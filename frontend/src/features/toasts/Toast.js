@@ -9,5 +9,6 @@ export const showToast = (description, status) => {
     duration: 3000,
     isClosable: true,
     position: "top-right",
+    variant: "left-accent",
   });
 };

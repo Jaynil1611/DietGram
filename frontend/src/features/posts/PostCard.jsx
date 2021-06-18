@@ -15,6 +15,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { updateLikes } from "./postsSlice";
 import { selectUserById } from "../users/usersSlice";
+import { Link } from "react-router-dom";
 
 function PostCard({
   id,
@@ -56,17 +57,19 @@ function PostCard({
           </Flex>
           <Flex direction={"column"}>
             <Flex justify={"space-between"} w={"100%"}>
-              <Flex align={"center"} wrap={"wrap"}>
-                <Text fontWeight={"bold"} textTransform="capitalize">
-                  {fullname}
-                </Text>
-                <Text ms={1} fontSize={"0.9rem"} color={"gray.600"}>
-                  @{username}
-                </Text>
-                <Text ms={{ sm: 2 }} fontSize={"0.9rem"} color={"gray.600"}>
-                  {getTime(createdAt)}
-                </Text>
-              </Flex>
+              <Link to={`/${username}`}>
+                <Flex align={"center"} wrap={"wrap"}>
+                  <Text fontWeight={"bold"} textTransform="capitalize">
+                    {fullname}
+                  </Text>
+                  <Text ms={1} fontSize={"0.9rem"} color={"gray.600"}>
+                    @{username}
+                  </Text>
+                  <Text ms={{ sm: 2 }} fontSize={"0.9rem"} color={"gray.600"}>
+                    {getTime(createdAt)}
+                  </Text>
+                </Flex>
+              </Link>
             </Flex>
             <Flex my={1} className="content" overflowWrap={"break-word"}>
               <BeautifyContent content={content} />

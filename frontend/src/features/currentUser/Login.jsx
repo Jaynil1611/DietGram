@@ -21,18 +21,21 @@ import {
   getFormValues,
   validateForm,
 } from "../../utils";
-import { useDispatch } from "react-redux";
-import { loginUser } from "./currentUserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, selectToken } from "./currentUserSlice";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token = useSelector(selectToken);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = getFormValues(e, "login");
     if (validateForm({ email, password })) {
-      dispatch(loginUser({ email, password })).then(() => navigate("/"));
+      dispatch(loginUser({ email, password })).then(() => {
+        if (token) navigate("/");
+      });
     }
   };
 

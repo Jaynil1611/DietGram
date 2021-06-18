@@ -6,19 +6,12 @@ export const getCurrentUserService = async () => {
   return response.data;
 };
 
-export const loginUserService = async (
-  { email, password },
-  { rejectWithValue }
-) => {
-  try {
-    const response = await axios.post(`${constructURL()}/login`, {
-      email,
-      password,
-    });
-    return response.data;
-  } catch (error) {
-    rejectWithValue(error.response.data.errorMessage);
-  }
+export const loginUserService = async ({ email, password }) => {
+  const response = await axios.post(`${constructURL()}/login`, {
+    email,
+    password,
+  });
+  return response.data;
 };
 
 export const signUpUserService = async (
