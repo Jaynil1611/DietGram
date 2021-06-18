@@ -43,12 +43,6 @@ function NotificationList() {
   return (
     <>
       <Header text={"Notifications"} />
-      {notificationStatus === "loading" && <Loader />}
-      {notificationStatus === "fulfilled" && notifications.length === 0 && (
-        <Text textAlign="center" mt={7}>
-          You're all caught up
-        </Text>
-      )}
       <Box textAlign="center">
         <Button
           mt={4}
@@ -60,6 +54,12 @@ function NotificationList() {
           Refresh
         </Button>
       </Box>
+      {notificationStatus === "loading" && <Loader />}
+      {notificationStatus === "fulfilled" && notifications.length === 0 && (
+        <Text textAlign="center" mt={7}>
+          You're all caught up
+        </Text>
+      )}
       {notificationStatus === "fulfilled" &&
         combinedStatus === "fulfilled" &&
         notifications.length > 0 && (
