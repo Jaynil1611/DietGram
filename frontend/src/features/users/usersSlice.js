@@ -82,6 +82,9 @@ const usersSlice = createSlice({
     [updateUser.rejected]: (state, { payload }) => {
       showToast("Couldn't update user details", "error");
     },
+    [getFollow.pending]: (state, { payload }) => {
+      state.followStatus = "loading";
+    },
     [getFollow.fulfilled]: (state, { payload }) => {
       state.followStatus = "fulfilled";
       usersAdapter.upsertOne(state, payload.followList);

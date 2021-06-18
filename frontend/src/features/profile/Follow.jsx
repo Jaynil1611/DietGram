@@ -33,15 +33,16 @@ function Follow() {
 
   return (
     <>
-      {status === "loading" && <Loader />}
-      {status === "fulfilled" && id && <FollowTabs {...user} />}
+      {(followStatus === "loading" || status === "loading") && <Loader />}
+      {status === "fulfilled" && followStatus === "fulfilled" && id && (
+        <FollowTabs {...user} />
+      )}
       <Outlet />
     </>
   );
 }
 
 const FollowTabs = ({ fullname, following, followers }) => {
-  console.log(followers, following);
   return (
     <>
       <Header text={`${fullname}`} />
