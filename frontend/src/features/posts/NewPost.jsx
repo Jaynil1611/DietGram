@@ -15,11 +15,12 @@ import {
   Textarea,
   Divider,
 } from "@chakra-ui/react";
-import { primaryButtonStyleProps } from "../../utils";
+import { getProfileImage, primaryButtonStyleProps } from "../../utils";
 import { MdAddCircle } from "react-icons/all";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserStatus, selectCurrentUser, Loader } from "../index";
 import { addPost } from "./postsSlice";
+import { showToast } from "../toasts/Toast";
 
 function NewPost() {
   const status = useSelector(getCurrentUserStatus);
@@ -39,13 +40,20 @@ function NewPostModal() {
     id: userId,
     username,
     profile_image_url,
+    fullname,
   } = useSelector(selectCurrentUser);
 
-  const postSubmit = () => {
-    dispatch(
-      addPost({ post: { content: initialRef.current.value, userId, username } })
-    );
-    onClose();
+  const postSubmit = (e) => {
+    e.preventDefault();
+    if (e.target.value) {
+      dispatch(
+        addPost({
+          post: { content: initialRef.current.value, userId, username },
+        })
+      );
+      return onClose();
+    }
+    showToast("Post content cannot be empty!", "error");
   };
 
   return (
@@ -78,7 +86,7 @@ function NewPostModal() {
             borderColor="gray.300"
           >
             <Flex mt={2}>
-              <Avatar src={profile_image_url} />
+              <Avatar src={getProfileImage(profile_image_url, fullname)} />
               <Box w={"100%"}>
                 <FormControl>
                   <Textarea
@@ -94,7 +102,7 @@ function NewPostModal() {
                     _placeholder={{
                       color: "gray.600",
                     }}
-                    isRequired
+                    isRequired={true}
                   ></Textarea>
                 </FormControl>
                 <Divider orientation="horizontal" bgColor="gray.300" />
