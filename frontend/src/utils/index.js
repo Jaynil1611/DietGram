@@ -24,6 +24,9 @@ export {
   checkPostAndUserStatus,
   checkLikeStatus,
 } from "./postUtils";
-export { checkCurrentUserFollowStatus } from "./userUtils";
-export { getIcon, getText, getColor } from "./notificationUtils";
+export {
+  checkCurrentUserFollowStatus,
+  checkCurrentUserFollowerStatus,
+} from "./userUtils";
+export { getIcon, getText, getColor, getPastDate } from "./notificationUtils";
 export { getSearchResults, checkSearchQuery } from "./searchUtils";

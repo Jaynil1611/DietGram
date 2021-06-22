@@ -16,3 +16,10 @@ export const getText = (type) =>
 
 export const getColor = (type) =>
   type === "Like" ? "accent.600" : "accent.300";
+
+export const getPastDate = () => {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 30);
+  return yesterday.toISOString();
+};
