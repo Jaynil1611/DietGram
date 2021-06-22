@@ -15,6 +15,7 @@ import {
   checkCurrentUserFollowStatus,
   checkPostAndUserStatus,
   getProfileImage,
+  primaryButtonStyleProps,
 } from "../../utils";
 import { followUser, selectUserById } from "../users/usersSlice";
 import { selectCurrentUserId } from "../currentUser/currentUserSlice";
@@ -80,8 +81,7 @@ export const PeopleCard = () => {
     selectUserSuggestions(state, currentUserId)
   );
 
-  const follow = (id) => {
-    const userId = id;
+  const follow = (userId) => {
     dispatch(followUser({ userId }));
   };
 
@@ -92,7 +92,7 @@ export const PeopleCard = () => {
       {users.map(({ username, fullname, profile_image_url, id, following }) => {
         const isFollowing = checkFollowing(id);
         return (
-          <>
+          <Box key={id}>
             {!isFollowing && (
               <Box my={1} py={2} borderY="1px solid" borderColor="gray.300">
                 <Flex wrap="wrap">
@@ -119,23 +119,28 @@ export const PeopleCard = () => {
                           overflow="hidden"
                           textOverflow="ellipsis"
                           whiteSpace="nowrap"
-                          w="100px"
-                          mr={2}
+                          w="90px"
                         >
                           @{username}
                         </Text>
                         {checkCurrentUserFollowStatus(
                           { following },
                           currentUser.id
-                        ) && <Tag p={1} me={3}> Follows you</Tag>}
+                        ) && (
+                          <Tag p={1} me={4}>
+                            Follows you
+                          </Tag>
+                        )}
                       </Flex>
                     </Flex>
                   </RouterLink>
                   <Flex align="center">
                     <Button
+                      {...primaryButtonStyleProps}
+                      maxW="max-content"
+                      height={"fit-content"}
                       onClick={() => follow(id)}
                       borderRadius="full"
-                      p={4}
                     >
                       Follow
                     </Button>
@@ -143,7 +148,7 @@ export const PeopleCard = () => {
                 </Flex>
               </Box>
             )}
-          </>
+          </Box>
         );
       })}
     </>

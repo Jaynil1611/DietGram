@@ -3,8 +3,11 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router";
-import { getProfileImage } from "../../utils";
-import { selectCurrentUserId } from "../currentUser/currentUserSlice";
+import {
+  checkCurrentUserFollowerStatus,
+  getProfileImage,
+  primaryButtonStyleProps,
+} from "../../utils";
 import {
   getUsersStatus,
   selectUserById,
@@ -12,8 +15,12 @@ import {
   Header,
   getFollowStatus,
   getFollow,
+  selectCurrentUserId,
   clearFollowStatus,
+  followUser,
+  unfollowUser,
 } from "../index";
+import { Link as RouterLink } from "react-router-dom";
 
 function Follow() {
   const location = useLocation();
@@ -23,26 +30,32 @@ function Follow() {
   const status = useSelector(getUsersStatus);
   const followStatus = useSelector(getFollowStatus);
   const user = useSelector((state) => selectUserById(state, id));
+  const currentUser = useSelector((state) =>
+    selectUserById(state, currentUserId)
+  );
 
   useEffect(() => {
     if (followStatus === "idle") {
-      dispatch(getFollow({ userId: id }));
+      return dispatch(getFollow({ userId: id }));
     }
-    return () => dispatch(clearFollowStatus());
-  }, [dispatch, id]);
+  }, [dispatch, followStatus]);
+
+  useEffect(() => {
+    dispatch(clearFollowStatus());
+  }, [id]);
 
   return (
     <>
       {(followStatus === "loading" || status === "loading") && <Loader />}
       {status === "fulfilled" && followStatus === "fulfilled" && id && (
-        <FollowTabs {...user} />
+        <FollowTabs {...user} currentUser={currentUser} />
       )}
       <Outlet />
     </>
   );
 }
 
-const FollowTabs = ({ fullname, following, followers }) => {
+const FollowTabs = ({ fullname, following, followers, currentUser }) => {
   return (
     <>
       <Header text={`${fullname}`} />
@@ -64,12 +77,27 @@ const FollowTabs = ({ fullname, following, followers }) => {
         <TabPanels>
           <TabPanel>
             {following.map((followee) => (
-              <PeopleCard key={followee.id} {...followee} />
+              <PeopleCard
+                key={followee.id}
+                {...followee}
+                isFollower={checkCurrentUserFollowerStatus(
+                  currentUser.followers,
+                  followee.id
+                )}
+              />
             ))}
           </TabPanel>
           <TabPanel>
             {followers.map((follower) => (
-              <PeopleCard key={follower.id} {...follower} type="follower" />
+              <PeopleCard
+                key={follower.id}
+                {...follower}
+                type={"followers"}
+                isFollower={checkCurrentUserFollowerStatus(
+                  currentUser.following,
+                  follower.id
+                )}
+              />
             ))}
           </TabPanel>
         </TabPanels>
@@ -78,7 +106,22 @@ const FollowTabs = ({ fullname, following, followers }) => {
   );
 };
 
-export const PeopleCard = ({ fullname, profile_image_url, username, type }) => {
+export const PeopleCard = ({
+  id,
+  fullname,
+  profile_image_url,
+  username,
+  isFollower,
+  type,
+}) => {
+  const dispatch = useDispatch();
+
+  const follow = (userId) => {
+    isFollower
+      ? dispatch(unfollowUser({ userId }))
+      : dispatch(followUser({ userId }));
+  };
+
   return (
     <Link to="" _hover={{ textDecoration: "none" }}>
       <Box py={2} borderY="1px solid" borderColor="gray.300">
@@ -91,34 +134,41 @@ export const PeopleCard = ({ fullname, profile_image_url, username, type }) => {
               alt="Profile"
             />
           </Flex>
-          <Flex direction="column" wrap="wrap">
-            <Text
-              fontWeight={"extrabold"}
-              _hover={{ textDecoration: "underline" }}
-            >
-              {fullname}
-            </Text>
-            <Flex align="center">
+          <RouterLink to={`/${username}`}>
+            <Flex direction="column" wrap="wrap">
               <Text
-                fontSize={"1rem"}
-                color={"gray.600"}
-                overflow="hidden"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
-                w="100px"
+                fontWeight={"extrabold"}
+                _hover={{ textDecoration: "underline" }}
               >
-                @{username}
+                {fullname}
               </Text>
-              {type !== "follower" && (
-                <Tag me={4} p={1}>
-                  Follows you
-                </Tag>
-              )}
+              <Flex align="center">
+                <Text
+                  fontSize={"1rem"}
+                  color={"gray.600"}
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  w="100px"
+                >
+                  @{username}
+                </Text>
+                {isFollower && !type && (
+                  <Tag me={4} p={1}>
+                    Follows you
+                  </Tag>
+                )}
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex mx={4} align="center">
-            <Button borderRadius="full" p={4}>
-              Follow
+          </RouterLink>
+          <Flex justify="flex-end" grow={1} mx={4}>
+            <Button
+              {...primaryButtonStyleProps}
+              maxW="max-content"
+              onClick={() => follow(id)}
+              height={"fit-content"}
+            >
+              {isFollower ? "Unfollow" : "Follow"}
             </Button>
           </Flex>
         </Flex>
