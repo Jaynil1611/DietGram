@@ -30,8 +30,8 @@ function App() {
   useEffect(() => {
     (async () => {
       if (token) {
-        dispatch(setToken({ token }));
         dispatch(getCurrentUser());
+        dispatch(setToken({ token }));
         dispatch(getUsers());
         dispatch(getPosts());
       }

@@ -44,8 +44,8 @@ export const SearchResults = () => {
   };
 
   const closeSearchResults = () => {
-    setSearchQuery("");
     onClose();
+    setSearchQuery("");
   };
 
   return (
@@ -61,8 +61,8 @@ export const SearchResults = () => {
           flip={true}
           initialFocusRef={inputSearchRef}
           isOpen={isOpen}
-          placement="bottom"
           onClose={closeSearchResults}
+          placement="bottom"
         >
           <PopoverTrigger>
             <Flex>
@@ -78,60 +78,63 @@ export const SearchResults = () => {
                   onClick={onOpen}
                   placeholder="Search"
                   bgColor="gray.100"
+                  value={searchQuery}
                   onChange={searchQueryHandler}
                 />
               </InputGroup>
             </Flex>
           </PopoverTrigger>
-          <PopoverContent maxH="80vh" overflowY="auto" pr="1rem" pl="1rem">
-            <PopoverCloseButton />
-            <Flex direction="column">
-              {results.length === 0 && searchQuery && (
-                <Text>No user found!</Text>
-              )}
-              {results.length > 0 &&
-                results.map((user) => {
-                  const { id, username, fullname, profile_image_url } = user;
-                  return (
-                    <Flex
-                      my={4}
-                      onClick={closeSearchResults}
-                      key={id}
-                      align="center"
-                      w="100%"
-                    >
-                      <Flex direction="column" basis="32px">
-                        <Image
-                          loading="lazy"
-                          borderRadius="full"
-                          src={getProfileImage(profile_image_url, fullname)}
-                          alt="Profile"
-                        />
+          {searchQuery && (
+            <PopoverContent maxH="80vh" overflowY="auto" pr="1rem" pl="1rem">
+              <PopoverCloseButton />
+              <Flex direction="column">
+                {results.length === 0 && searchQuery && (
+                  <Text>No user found!</Text>
+                )}
+                {results.length > 0 &&
+                  results.map((user) => {
+                    const { id, username, fullname, profile_image_url } = user;
+                    return (
+                      <Flex
+                        my={4}
+                        onClick={closeSearchResults}
+                        key={id}
+                        align="center"
+                        w="100%"
+                      >
+                        <Flex direction="column" basis="32px">
+                          <Image
+                            loading="lazy"
+                            borderRadius="full"
+                            src={getProfileImage(profile_image_url, fullname)}
+                            alt="Profile"
+                          />
+                        </Flex>
+                        <Flex direction="column">
+                          <Text
+                            fontWeight={"extrabold"}
+                            _hover={{ textDecoration: "underline" }}
+                          >
+                            {fullname}
+                          </Text>
+                          <Text
+                            fontSize={"1rem"}
+                            color={"gray.600"}
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            whiteSpace="nowrap"
+                            w="100px"
+                            mr={2}
+                          >
+                            @{username}
+                          </Text>
+                        </Flex>
                       </Flex>
-                      <Flex direction="column">
-                        <Text
-                          fontWeight={"extrabold"}
-                          _hover={{ textDecoration: "underline" }}
-                        >
-                          {fullname}
-                        </Text>
-                        <Text
-                          fontSize={"1rem"}
-                          color={"gray.600"}
-                          overflow="hidden"
-                          textOverflow="ellipsis"
-                          whiteSpace="nowrap"
-                          w="100px"
-                          mr={2}
-                        >
-                          @{username}
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  );
-                })}
-            </Flex>
-          </PopoverContent>
+                    );
+                  })}
+              </Flex>
+            </PopoverContent>
+          )}
         </Popover>
       </Box>
     </>
