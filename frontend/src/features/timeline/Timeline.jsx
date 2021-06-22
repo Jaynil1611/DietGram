@@ -1,12 +1,17 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Loader } from "../index";
-import { Profile, PostListing, NotFound } from "../index";
-import { getUsersStatus, selectUserByName } from "../users/usersSlice";
+import { checkPostAndUserStatus } from "../../utils";
+import {
+  Profile,
+  PostListing,
+  NotFound,
+  selectUserByName,
+  Loader,
+} from "../index";
 
 function Timeline() {
   const { username } = useParams();
-  const status = useSelector(getUsersStatus);
+  const status = useSelector(checkPostAndUserStatus);
 
   return (
     <>

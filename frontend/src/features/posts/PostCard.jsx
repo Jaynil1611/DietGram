@@ -26,7 +26,7 @@ function PostCard({
   likes: { count, reactedUsers },
   type,
 }) {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const currentUserId = useSelector(selectCurrentUserId);
   const user = useSelector((state) => selectUserById(state, userId));
   const { fullname, username, profile_image_url } =
@@ -34,7 +34,7 @@ function PostCard({
 
   const likeButtonPressed = (e) => {
     e.preventDefault();
-    disptach(updateLikes({ id }));
+    dispatch(updateLikes({ id }));
   };
 
   const getLikeStatus = () => {

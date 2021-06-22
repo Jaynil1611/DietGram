@@ -38,7 +38,7 @@ export {
   selectAllPosts,
   selectPostById,
   selectPostIds,
-  selectPostsByUser,
+  selectPostsByUserId,
   default as postReducer,
   getPostStatus,
 } from "./posts/postsSlice";

@@ -36,7 +36,7 @@ import {
   selectCurrentUserId,
 } from "../index";
 import EditPost from "./EditPost";
-import { deletePost } from "./postsSlice";
+import { deletePost, updateLikes } from "./postsSlice";
 import { Link } from "react-router-dom";
 
 function PostDetailCard() {
@@ -65,6 +65,11 @@ function PostDetailCardView({ postId }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUserId = useSelector(selectCurrentUserId);
+
+  const likeButtonPressed = (e) => {
+    e.preventDefault();
+    dispatch(updateLikes({ id }));
+  };
 
   const getLikeStatus = () => {
     return checkLikeStatus(reactedUsers, currentUserId)
@@ -153,6 +158,7 @@ function PostDetailCardView({ postId }) {
             <Flex align={"center"}>
               <Icon
                 boxSize="1.5rem"
+                onClick={likeButtonPressed}
                 color="accent.500"
                 as={getLikeStatus()}
                 cursor={"pointer"}
