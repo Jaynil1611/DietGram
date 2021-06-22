@@ -45,10 +45,11 @@ function NewPostModal() {
 
   const postSubmit = (e) => {
     e.preventDefault();
-    if (e.target.value) {
+    const content = initialRef.current.value;
+    if (content) {
       dispatch(
         addPost({
-          post: { content: initialRef.current.value, userId, username },
+          post: { content, userId, username },
         })
       );
       return onClose();
