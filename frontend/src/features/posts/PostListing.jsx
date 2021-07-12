@@ -6,16 +6,17 @@ import Header from "./Header";
 import { useSelector } from "react-redux";
 import { selectAllPosts, selectCurrentUser } from "../index";
 import Loader from "./Loader";
-import { checkPostAndUserStatus } from "../../utils";
+import { checkCurrentUserStats } from "../../utils";
 import { selectPostsByUserId } from "./postsSlice";
 
 function PostListing({ user, type }) {
   const posts = useSelector(selectAllPosts);
-  const status = useSelector(checkPostAndUserStatus);
+  const status = useSelector(checkCurrentUserStats);
   const currentUser = useSelector(selectCurrentUser);
   const userPosts = useSelector((state) =>
-    selectPostsByUserId(state, user ? user.id : currentUser.id)
+    selectPostsByUserId(state, user ? user.id : currentUser?.id)
   );
+
   return (
     <>
       {type !== "Timeline" && <Header text={"Home"} back={false} />}

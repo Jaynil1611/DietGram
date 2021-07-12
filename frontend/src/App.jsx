@@ -23,8 +23,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const dispatch = useDispatch();
-  let token = useSelector(selectToken) || getTokenFromLocalStorage();
+  const dispatch = useDispatch();  
+  let token = useSelector(selectToken) ?? getTokenFromLocalStorage();
   setupAuthHeaderForServerCalls(token);
 
   useEffect(() => {

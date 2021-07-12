@@ -51,11 +51,20 @@ export const getDate = (timestamp) => {
 export const showBackButton = (back) => !(back === false);
 
 export const checkPostAndUserStatus = (state) => {
-  const postStatus = state.posts.status;
-  const userStatus = state.users.status;
-  return postStatus === "fulfilled" && userStatus === "fulfilled"
+  return compareTwoStatus(state.posts.status, state.users.status);
+};
+
+export const checkCurrentUserStats = (state) => {
+  return compareTwoStatus(
+    state.currentUser.status,
+    checkPostAndUserStatus(state)
+  );
+};
+
+export const compareTwoStatus = (first, second) => {
+  return first === "fulfilled" && second === "fulfilled"
     ? "fulfilled"
-    : postStatus === "loading" || userStatus === "loading"
+    : first === "loading" || second === "loading"
     ? "loading"
     : "rejected";
 };

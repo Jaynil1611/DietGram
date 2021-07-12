@@ -23,6 +23,8 @@ export {
   showBackButton,
   checkPostAndUserStatus,
   checkLikeStatus,
+  compareTwoStatus,
+  checkCurrentUserStats,
 } from "./postUtils";
 export {
   checkCurrentUserFollowStatus,
