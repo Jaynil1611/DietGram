@@ -23,6 +23,7 @@ export { default as ScrollToTop } from "./extras/ScrollToTop";
 export { default as Search } from "./search/Search";
 export { default as Bookmark } from "./bookmarks/Bookmark";
 export { default as Hashtag } from "./search/Hashtag";
+export { default as PostCard } from "./posts/PostCard";
 export {
   getCurrentUser,
   setToken,
@@ -63,3 +64,12 @@ export {
   selectAllNotifications,
   default as notificationsReducer,
 } from "./notifications/notificationsSlice";
+export {
+  default as bookmarksReducer,
+  selectAllBookmarks,
+  selectBookmarkById,
+  getBookmarks,
+  postBookmark,
+  deleteBookmark,
+  getBookmarkStatus,
+} from "./bookmarks/bookmarkSlice";

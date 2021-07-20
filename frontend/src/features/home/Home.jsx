@@ -42,7 +42,7 @@ function Home() {
             <PrivateRoute path="profile/follow" element={<Follow />} />
             <PrivateRoute path=":username/follow" element={<Follow />} />
             <PrivateRoute path="/hashtag/:name" element={<Hashtag />} />
-            <PrivateRoute path="/saved" element={<Bookmark />} />
+            <PrivateRoute path="/bookmarks" element={<Bookmark />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

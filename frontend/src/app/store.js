@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
+  bookmarksReducer,
   currentUserReducer,
   notificationsReducer,
   postReducer,
@@ -12,5 +13,6 @@ export const store = configureStore({
     posts: postReducer,
     users: userReducer,
     notifications: notificationsReducer,
+    bookmarks: bookmarksReducer,
   },
 });

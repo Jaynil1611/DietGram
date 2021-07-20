@@ -72,3 +72,7 @@ export const compareTwoStatus = (first, second) => {
 export const checkLikeStatus = (reactedUsers, userId) => {
   return reactedUsers.find((user) => user.id === userId) ? true : false;
 };
+
+export const checkBookmarkExists = (bookmarks, id) => {
+  return bookmarks.find(({ postId }) => postId === id);
+};

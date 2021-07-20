@@ -13,6 +13,7 @@ import {
   getUsers,
   selectToken,
   ScrollToTop,
+  getBookmarks,
 } from "./features";
 import "./styles.css";
 import { Route, Routes } from "react-router";
@@ -23,7 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   let token = useSelector(selectToken) ?? getTokenFromLocalStorage();
   setupAuthHeaderForServerCalls(token);
 
@@ -34,6 +35,7 @@ function App() {
         dispatch(setToken({ token }));
         dispatch(getUsers());
         dispatch(getPosts());
+        dispatch(getBookmarks());
       }
     })();
   }, [dispatch, token]);

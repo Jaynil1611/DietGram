@@ -6,16 +6,22 @@ import {
   IoBookmark,
   IoShareSocialOutline,
 } from "react-icons/all";
-import { BeautifyContent, selectCurrentUserId } from "../index";
 import {
+  BeautifyContent,
+  selectCurrentUserId,
+  selectUserById,
+  selectAllBookmarks,
+} from "../index";
+import {
+  checkBookmarkExists,
   checkLikeStatus,
   getProfileImage,
   getTime,
-} from "../../utils/postUtils";
+} from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLikes } from "./postsSlice";
-import { selectUserById } from "../users/usersSlice";
 import { Link } from "react-router-dom";
+import { deleteBookmark, postBookmark } from "../bookmarks/bookmarkSlice";
 
 function PostCard({
   id,
@@ -29,6 +35,7 @@ function PostCard({
   const dispatch = useDispatch();
   const currentUserId = useSelector(selectCurrentUserId);
   const user = useSelector((state) => selectUserById(state, userId));
+  const bookmarks = useSelector(selectAllBookmarks);
   const { fullname, username, profile_image_url } =
     type === "Timeline" ? timelineUser : user;
 
@@ -43,6 +50,15 @@ function PostCard({
       : IoMdHeartEmpty;
   };
 
+  const bookmarkExists = checkBookmarkExists(bookmarks, id);
+
+  const bookmarkButtonPressed = (e) => {
+    e.preventDefault();
+    bookmarkExists
+      ? dispatch(deleteBookmark({ id }))
+      : dispatch(postBookmark({ id }));
+  };
+
   return (
     <Box key={id} p={3} w={"100%"} borderY={"1px"} borderColor={"gray.300"}>
       <Flex direction={"column"}>
@@ -55,7 +71,7 @@ function PostCard({
               alt="Profile"
             />
           </Flex>
-          <Flex direction={"column"}>
+          <Flex direction={"column"} w="100%">
             <Flex justify={"space-between"} w={"100%"}>
               <Link to={`/${username}`}>
                 <Flex align={"center"} wrap={"wrap"}>
@@ -89,7 +105,11 @@ function PostCard({
                 />
                 <Text px={2}>{count}</Text>
               </Flex>
-              <Icon boxSize="1.3rem" as={IoBookmarkOutline} />
+              <Icon
+                onClick={bookmarkButtonPressed}
+                boxSize="1.3rem"
+                as={bookmarkExists ? IoBookmark : IoBookmarkOutline}
+              />
               <Icon boxSize="1.3rem" as={IoShareSocialOutline} />
             </Flex>
           </Flex>

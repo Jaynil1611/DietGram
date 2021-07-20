@@ -20,8 +20,9 @@ import {
   BsThreeDots,
 } from "react-icons/all";
 import {
+  checkBookmarkExists,
+  checkCurrentUserStatus,
   checkLikeStatus,
-  checkPostAndUserStatus,
   getDate,
   getProfileImage,
 } from "../../utils";
@@ -34,6 +35,10 @@ import {
   Loader,
   selectUserById,
   selectCurrentUserId,
+  getBookmarkStatus,
+  selectAllBookmarks,
+  deleteBookmark,
+  postBookmark,
 } from "../index";
 import EditPost from "./EditPost";
 import { deletePost, updateLikes } from "./postsSlice";
@@ -41,16 +46,22 @@ import { Link } from "react-router-dom";
 
 function PostDetailCard() {
   const { postId } = useParams();
-  const status = useSelector(checkPostAndUserStatus);
+  const status = useSelector(checkCurrentUserStatus);
+  const bookmarkStatus = useSelector(getBookmarkStatus);
+
   return (
     <>
       {status !== "fulfilled" && <Loader />}
-      {status === "fulfilled" && <PostDetailCardView postId={postId} />}
+      {status === "fulfilled" && bookmarkStatus === "fulfilled" && (
+        <PostDetailCardView postId={postId} />
+      )}
     </>
   );
 }
 
 function PostDetailCardView({ postId }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     id,
     userId,
@@ -58,12 +69,10 @@ function PostDetailCardView({ postId }) {
     createdAt,
     likes: { count, reactedUsers },
   } = useSelector((state) => selectPostById(state, postId));
-
+  const bookmarks = useSelector(selectAllBookmarks);
   const { fullname, username, profile_image_url } = useSelector((state) =>
     selectUserById(state, userId)
   );
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const currentUserId = useSelector(selectCurrentUserId);
 
   const likeButtonPressed = (e) => {
@@ -81,6 +90,15 @@ function PostDetailCardView({ postId }) {
     dispatch(deletePost({ post: { id } }));
     navigate("/");
   };
+
+  const bookmarkExists = checkBookmarkExists(bookmarks, id);
+  const bookmarkButtonPressed = (e) => {
+    e.preventDefault();
+    bookmarkExists
+      ? dispatch(deleteBookmark({ id }))
+      : dispatch(postBookmark({ id }));
+  };
+
   return (
     <>
       <Header text={"Post"} />
@@ -165,7 +183,12 @@ function PostDetailCardView({ postId }) {
               />
               <Text px={2}>{count}</Text>
             </Flex>
-            <Icon boxSize="1.5rem" as={IoBookmarkOutline} cursor={"pointer"} />
+            <Icon
+              boxSize="1.5rem"
+              onClick={bookmarkButtonPressed}
+              as={bookmarkExists ? IoBookmark : IoBookmarkOutline}
+              cursor={"pointer"}
+            />
             <Icon
               boxSize="1.5rem"
               as={IoShareSocialOutline}

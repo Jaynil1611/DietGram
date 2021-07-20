@@ -25,6 +25,7 @@ export {
   checkLikeStatus,
   compareTwoStatus,
   checkCurrentUserStatus,
+  checkBookmarkExists,
 } from "./postUtils";
 export {
   checkCurrentUserFollowStatus,
