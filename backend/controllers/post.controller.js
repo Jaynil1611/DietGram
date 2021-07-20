@@ -14,13 +14,15 @@ const getUserFeed = async (req, res, next) => {
     }
 
     let feed = [];
-    user.following.slice(-5).forEach(async (id) => {
+    await user.following.slice(-5).forEach(async (id) => {
       const posts = await Post.find({ userId: id })
         .limit(5)
         .sort({ createdAt: "desc" });
       feed = [...posts, ...feed];
     });
-    const userPosts = await Post.find({ userId }).sort({ createdAt: "desc" });
+    const userPosts = await Post.find({ userId })
+      .limit(5)
+      .sort({ createdAt: "desc" });
     feed = feed.concat(userPosts);
     res.status(200).json({ success: true, posts: feed });
   } catch (error) {
