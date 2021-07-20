@@ -8,6 +8,7 @@ const userRouter = require("./routes/user.router");
 const loginRouter = require("./routes/login.router");
 const postRouter = require("./routes/post.router");
 const notificationRouter = require("./routes/notification.router");
+const bookmarkRouter = require("./routes/bookmar.router");
 
 const { pathNotFoundHandler } = require("./middlewares/pathNotFoundHandler");
 const { errorHandler } = require("./middlewares/errorHandler");
@@ -30,6 +31,7 @@ app.use("/login", loginRouter);
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/notifications", notificationRouter);
+app.use("/bookmarks", bookmarkRouter);
 
 app.use(pathNotFoundHandler);
 app.use(errorHandler);
