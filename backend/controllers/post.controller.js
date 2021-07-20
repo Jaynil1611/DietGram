@@ -14,8 +14,8 @@ const getUserFeed = async (req, res, next) => {
     }
 
     let feed = [];
-    user.following.slice(-5).forEach(async (userId) => {
-      const posts = await Post.find({ userId })
+    user.following.slice(-5).forEach(async (id) => {
+      const posts = await Post.find({ userId: id })
         .limit(5)
         .sort({ createdAt: "desc" });
       feed = [...posts, ...feed];
@@ -51,7 +51,7 @@ const createNotificationsForNewPost = async (postId, userId) => {
     const notifications = followers.map((followerId) => ({
       ...newNotification,
       destinationUser: followerId,
-    }));    
+    }));
     Notification.insertMany(notifications);
   } catch (error) {
     return new Error("New Post notification failed!");
