@@ -13,16 +13,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserSuggestions, Search } from "../index";
 import {
   checkCurrentUserFollowStatus,
-  checkPostAndUserStatus,
+  checkCurrentUserStatus,
   getProfileImage,
   primaryButtonStyleProps,
 } from "../../utils";
 import { followUser, selectUserById } from "../users/usersSlice";
-import { selectCurrentUserId } from "../currentUser/currentUserSlice";
+import { selectCurrentUser } from "../currentUser/currentUserSlice";
 import { Link as RouterLink } from "react-router-dom";
 
 function Updates() {
-  const status = useSelector(checkPostAndUserStatus);
+  const status = useSelector(checkCurrentUserStatus);
   return (
     <>
       <Search />
@@ -73,13 +73,13 @@ function Updates() {
 
 export const PeopleCard = () => {
   const dispatch = useDispatch();
-  const currentUserId = useSelector(selectCurrentUserId);
+  const currentLoggedUser = useSelector(selectCurrentUser);
   const currentUser = useSelector((state) =>
-    selectUserById(state, currentUserId)
+    selectUserById(state, currentLoggedUser?.id)
   );
-  
+
   const users = useSelector((state) =>
-    selectUserSuggestions(state, currentUserId)
+    selectUserSuggestions(state, currentLoggedUser?.id)
   );
   const suggestedUsers = users.sort(() => 0.5 - Math.random()).slice(0, 5);
 

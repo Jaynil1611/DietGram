@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Link, Icon, Text } from "@chakra-ui/react";
 import { menuList, navButtonProps } from "../../utils";
 import { NavLink } from "react-router-dom";
-import NewPost from "../posts/NewPost";
+import { NewPost } from "../index";
 
 function DesktopNav() {
   return (

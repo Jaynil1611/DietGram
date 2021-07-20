@@ -7,6 +7,7 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import {
   getCurrentUserStatus,
   selectCurrentUser,
@@ -15,11 +16,12 @@ import {
 export const CollapseMenu = () => {
   const status = useSelector(getCurrentUserStatus);
   const currentUser = useSelector(selectCurrentUser);
+  const navigate = useNavigate();
 
   return (
     <>
       {status === "fulfilled" && (
-        <Menu>
+        <Menu placement="auto">
           <MenuButton as={Box}>
             <Avatar
               src={`https://ui-avatars.com/api/?name=${currentUser.fullname}&rounded=true&background=fd7014&color=fff&size=32`}
@@ -28,8 +30,8 @@ export const CollapseMenu = () => {
               borderRadius="full"
             />
           </MenuButton>
-          <MenuList>
-            <MenuItem>Logout</MenuItem>
+          <MenuList zIndex={5}>
+            <MenuItem onClick={() => navigate("/logout")}>Logout</MenuItem>
           </MenuList>
         </Menu>
       )}

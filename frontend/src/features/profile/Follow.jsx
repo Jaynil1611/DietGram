@@ -42,7 +42,7 @@ function Follow() {
 
   useEffect(() => {
     dispatch(clearFollowStatus());
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <>
