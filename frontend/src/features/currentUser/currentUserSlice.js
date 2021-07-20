@@ -38,13 +38,11 @@ const currentUserSlice = createSlice({
     },
   },
   extraReducers: {
-    [loginUser.pending]: (state, { payload }) => {
-      showToast("Checking user credentials...", "info");
-    },
     [loginUser.fulfilled]: (state, { payload }) => {
       state.currentUser = payload.user;
       state.token = payload.token;
       storeToken(payload.token);
+      showToast("Login successful", "success");
     },
     [loginUser.rejected]: (state, { payload }) => {
       showToast("User doesn't exist", "error");

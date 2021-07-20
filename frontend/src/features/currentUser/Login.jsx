@@ -39,6 +39,11 @@ function Login() {
     }
   };
 
+  const fillGuestCredentials = (e) => {
+    e.target.form[0].value = "test@gmail.com";
+    e.target.form[1].value = "123456g";
+  };
+
   return (
     <>
       <SimpleGrid
@@ -80,6 +85,16 @@ function Login() {
                     number)
                   </FormHelperText>
                 </FormControl>
+                <Flex justify="center">
+                  <Button
+                    {...primaryButtonStyleProps}
+                    maxW="max-content"
+                    mt={8}
+                    onClick={fillGuestCredentials}
+                  >
+                    Fill Guest Credentials
+                  </Button>
+                </Flex>
                 <Button
                   {...primaryButtonStyleProps}
                   width="full"

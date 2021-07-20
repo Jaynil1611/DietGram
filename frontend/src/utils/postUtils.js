@@ -54,7 +54,7 @@ export const checkPostAndUserStatus = (state) => {
   return compareTwoStatus(state.posts.status, state.users.status);
 };
 
-export const checkCurrentUserStats = (state) => {
+export const checkCurrentUserStatus = (state) => {
   return compareTwoStatus(
     state.currentUser.status,
     checkPostAndUserStatus(state)

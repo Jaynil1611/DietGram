@@ -5,33 +5,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router";
 import {
   checkCurrentUserFollowerStatus,
+  checkCurrentUserStatus,
   getProfileImage,
   primaryButtonStyleProps,
 } from "../../utils";
 import {
-  getUsersStatus,
   selectUserById,
   Loader,
   Header,
   getFollowStatus,
   getFollow,
-  selectCurrentUserId,
   clearFollowStatus,
   followUser,
   unfollowUser,
+  selectCurrentUser,
 } from "../index";
 import { Link as RouterLink } from "react-router-dom";
 
 function Follow() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const currentUserId = useSelector(selectCurrentUserId);
-  const id = location?.state?.id ?? currentUserId;
-  const status = useSelector(getUsersStatus);
+  const currentUserLogged = useSelector(selectCurrentUser);
+  const id = location?.state?.id ?? currentUserLogged?.id;
+  const status = useSelector(checkCurrentUserStatus);
   const followStatus = useSelector(getFollowStatus);
   const user = useSelector((state) => selectUserById(state, id));
   const currentUser = useSelector((state) =>
-    selectUserById(state, currentUserId)
+    selectUserById(state, currentUserLogged?.id)
   );
 
   useEffect(() => {
