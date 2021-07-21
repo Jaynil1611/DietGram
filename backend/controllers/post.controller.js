@@ -64,12 +64,6 @@ const addNewPost = async (req, res, next) => {
   try {
     const { userId } = req;
     const newPost = new Post({ ...req.body, userId });
-    let post = await Post.findById(newPost._id);
-    if (post) {
-      return res
-        .status(403)
-        .json({ success: false, errorMessage: "Post already exist!" });
-    }
     post = await newPost.save();
     res.status(201).json({ success: true, post });
     createNotificationsForNewPost(post._id, userId);
