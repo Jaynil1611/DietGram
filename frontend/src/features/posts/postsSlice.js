@@ -62,12 +62,14 @@ const postsSlice = createSlice({
     },
     [editPost.fulfilled]: (state, { payload }) => {
       postsAdapter.upsertOne(state, payload.post);
+      showToast("Post edited", "success");
     },
     [editPost.rejected]: (state, { payload }) => {
       showToast("Couldn't edit post", "error");
     },
     [deletePost.fulfilled]: (state, { payload }) => {
       postsAdapter.removeOne(state, payload.post.id);
+      showToast("Post deleted", "success");
     },
     [deletePost.rejected]: (state, { payload }) => {
       showToast("Couldn't delete post", "error");

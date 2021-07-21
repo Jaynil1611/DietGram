@@ -20,11 +20,14 @@ import {
   BsThreeDots,
 } from "react-icons/all";
 import {
+  buttonFocusProps,
   checkBookmarkExists,
   checkCurrentUserStatus,
   checkLikeStatus,
   getDate,
   getProfileImage,
+  navButtonProps,
+  primaryButtonStyleProps,
 } from "../../utils";
 import { Outlet, useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,6 +46,7 @@ import {
 import EditPost from "./EditPost";
 import { deletePost, updateLikes } from "./postsSlice";
 import { Link } from "react-router-dom";
+import { showToast } from "../toasts/Toast";
 
 function PostDetailCard() {
   const { postId } = useParams();
@@ -99,6 +103,12 @@ function PostDetailCardView({ postId }) {
       : dispatch(postBookmark({ id }));
   };
 
+  const getPostShareLink = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(`${window.location.hostname}/posts/${id}`);
+    showToast("Link copied to clipboard", "success");
+  };
+
   return (
     <>
       <Header text={"Post"} />
@@ -138,6 +148,7 @@ function PostDetailCardView({ postId }) {
                       as={IconButton}
                       aria-label="Options"
                       icon={<BsThreeDots />}
+                      _focus={{ outline: "none" }}
                       variant="outline"
                     />
                     <MenuList>
@@ -191,6 +202,7 @@ function PostDetailCardView({ postId }) {
             />
             <Icon
               boxSize="1.5rem"
+              onClick={getPostShareLink}
               as={IoShareSocialOutline}
               cursor={"pointer"}
             />

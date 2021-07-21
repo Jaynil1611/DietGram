@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateLikes } from "./postsSlice";
 import { Link } from "react-router-dom";
 import { deleteBookmark, postBookmark } from "../bookmarks/bookmarkSlice";
+import { showToast } from "../toasts/Toast";
 
 function PostCard({
   id,
@@ -57,6 +58,12 @@ function PostCard({
     bookmarkExists
       ? dispatch(deleteBookmark({ id }))
       : dispatch(postBookmark({ id }));
+  };
+
+  const getPostShareLink = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(`${window.location.hostname}/posts/${id}`);
+    showToast("Link copied to clipboard", "success");
   };
 
   return (
@@ -110,7 +117,11 @@ function PostCard({
                 boxSize="1.3rem"
                 as={bookmarkExists ? IoBookmark : IoBookmarkOutline}
               />
-              <Icon boxSize="1.3rem" as={IoShareSocialOutline} />
+              <Icon
+                boxSize="1.3rem"
+                onClick={getPostShareLink}
+                as={IoShareSocialOutline}
+              />
             </Flex>
           </Flex>
         </Flex>

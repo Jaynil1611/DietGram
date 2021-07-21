@@ -1,3 +1,5 @@
+import { extendTheme } from "@chakra-ui/react";
+
 export const colors = {
   accent: {
     50: "#ffeedc",
@@ -17,3 +19,8 @@ export const fonts = {
   heading: "Open Sans",
   body: "Open Sans",
 };
+
+export const theme = extendTheme({
+  colors,
+  fonts,
+});

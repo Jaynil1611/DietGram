@@ -1,4 +1,4 @@
-export { colors, fonts } from "./theme";
+export { colors, fonts, theme } from "./theme";
 export { menuList } from "./navbarUtils";
 export {
   buttonFocusProps,

@@ -5,13 +5,7 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { extendTheme } from "@chakra-ui/react";
-import { fonts, colors } from "./utils";
-
-const theme = extendTheme({
-  colors,
-  fonts,
-});
+import { theme } from "./utils";
 
 ReactDOM.render(
   <React.StrictMode>
