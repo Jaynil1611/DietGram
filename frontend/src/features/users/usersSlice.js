@@ -63,6 +63,7 @@ const usersSlice = createSlice({
       showToast("Couldn't fetch users", "error");
     },
     [followUser.fulfilled]: (state, { payload }) => {
+      state.followStatus = "fetch";
       usersAdapter.upsertOne(state, payload.user);
       usersAdapter.upsertOne(state, payload.followedUser);
     },
@@ -70,6 +71,7 @@ const usersSlice = createSlice({
       showToast("Couldn't follow user", "error");
     },
     [unfollowUser.fulfilled]: (state, { payload }) => {
+      state.followStatus = "fetch";
       usersAdapter.upsertOne(state, payload.user);
       usersAdapter.upsertOne(state, payload.unfollowedUser);
     },

@@ -35,8 +35,8 @@ function Follow() {
   );
 
   useEffect(() => {
-    if (followStatus === "idle") {
-      return dispatch(getFollow({ userId: id }));
+    if (followStatus === "idle" || followStatus === "fetch") {
+      dispatch(getFollow({ userId: id }));
     }
   }, [dispatch, followStatus]);
 
@@ -56,19 +56,20 @@ function Follow() {
 }
 
 const FollowTabs = ({ fullname, following, followers, currentUser }) => {
+  console.log(following);
   return (
     <>
       <Header text={`${fullname}`} />
       <Tabs mt={6} p={2} variant="solid-rounded" isFitted w="100%">
         <TabList>
           <Tab
-            _selected={{ bgColor: "accent.400" }}
+            _selected={{ bgColor: "accent.400", color: "white" }}
             _focus={{ outline: "none" }}
           >
             Following
           </Tab>
           <Tab
-            _selected={{ bgColor: "accent.400" }}
+            _selected={{ bgColor: "accent.400", color: "white" }}
             _focus={{ outline: "none" }}
           >
             Followers
@@ -84,6 +85,10 @@ const FollowTabs = ({ fullname, following, followers, currentUser }) => {
                   currentUser.followers,
                   followee.id
                 )}
+                isFollowing={checkCurrentUserFollowerStatus(
+                  currentUser.following,
+                  followee.id
+                )}
               />
             ))}
           </TabPanel>
@@ -92,8 +97,11 @@ const FollowTabs = ({ fullname, following, followers, currentUser }) => {
               <PeopleCard
                 key={follower.id}
                 {...follower}
-                type={"followers"}
                 isFollower={checkCurrentUserFollowerStatus(
+                  currentUser.followers,
+                  follower.id
+                )}
+                isFollowing={checkCurrentUserFollowerStatus(
                   currentUser.following,
                   follower.id
                 )}
@@ -112,12 +120,12 @@ export const PeopleCard = ({
   profile_image_url,
   username,
   isFollower,
-  type,
+  isFollowing,
 }) => {
   const dispatch = useDispatch();
 
   const follow = (userId) => {
-    isFollower
+    isFollowing
       ? dispatch(unfollowUser({ userId }))
       : dispatch(followUser({ userId }));
   };
@@ -153,7 +161,7 @@ export const PeopleCard = ({
                 >
                   @{username}
                 </Text>
-                {isFollower && !type && (
+                {isFollower && (
                   <Tag me={4} p={1}>
                     Follows you
                   </Tag>
@@ -167,8 +175,9 @@ export const PeopleCard = ({
               maxW="max-content"
               onClick={() => follow(id)}
               height={"fit-content"}
+              className={`${isFollowing ? "follow" : ""}`}
             >
-              {isFollower ? "Unfollow" : "Follow"}
+              <span>{isFollowing ? "Following" : "Follow"}</span>
             </Button>
           </Flex>
         </Flex>
