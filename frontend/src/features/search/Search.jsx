@@ -19,6 +19,7 @@ import {
 } from "../../utils";
 import { Loader, selectAllUsers } from "../index";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 function Search() {
   const status = useSelector(checkPostAndUserStatus);
@@ -35,6 +36,7 @@ export const SearchResults = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputSearchRef = useRef(null);
+  const navigate = useNavigate();
   const users = useSelector(selectAllUsers);
   const results = getSearchResults(users, searchQuery);
 
@@ -43,9 +45,10 @@ export const SearchResults = () => {
     setSearchQuery(e.target.value);
   };
 
-  const closeSearchResults = () => {
+  const closeSearchResults = (username) => {
     onClose();
     setSearchQuery("");
+    if (username) navigate(`/${username}`);
   };
 
   return (
@@ -97,7 +100,7 @@ export const SearchResults = () => {
                     return (
                       <Flex
                         my={4}
-                        onClick={closeSearchResults}
+                        onClick={() => closeSearchResults(username)}
                         key={id}
                         align="center"
                         w="100%"
@@ -110,10 +113,13 @@ export const SearchResults = () => {
                             alt="Profile"
                           />
                         </Flex>
-                        <Flex direction="column">
+                        <Flex direction="column" ms={3}>
                           <Text
                             fontWeight={"extrabold"}
-                            _hover={{ textDecoration: "underline" }}
+                            _hover={{
+                              textDecoration: "underline",
+                              cursor: "pointer",
+                            }}
                           >
                             {fullname}
                           </Text>

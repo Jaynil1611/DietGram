@@ -132,7 +132,7 @@ export const PeopleCard = ({
   return (
     <Link to="" _hover={{ textDecoration: "none" }}>
       <Box py={2} borderY="1px solid" borderColor="gray.300">
-        <Flex wrap="wrap">
+        <Flex wrap={{ sm: "nowrap", lg: "wrap" }}>
           <Flex mx={4} direction="column" shrink="0" basis="48px">
             <Image
               loading="lazy"
@@ -161,14 +161,14 @@ export const PeopleCard = ({
                   @{username}
                 </Text>
                 {isFollower && (
-                  <Tag me={4} p={1}>
+                  <Tag display={["none", "initial"]} me={4} p={1}>
                     Follows you
                   </Tag>
                 )}
               </Flex>
             </Flex>
           </RouterLink>
-          <Flex justify="flex-end" grow={1} mx={4}>
+          <Flex justify="flex-end" grow={1} mx={{ sm: 0, lg: 4 }}>
             <Button
               {...primaryButtonStyleProps}
               maxW="max-content"

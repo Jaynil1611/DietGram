@@ -16,7 +16,7 @@ import { Box, SimpleGrid } from "@chakra-ui/layout";
 import { useMediaQuery } from "@chakra-ui/media-query";
 
 function Home() {
-  const [isDesktopMode, showUpdates] = useMediaQuery([
+  const [isDesktopMode] = useMediaQuery([
     "(min-width: 30em)",
     "(min-width: 62em)",
   ]);
@@ -32,7 +32,7 @@ function Home() {
         templateColumns={{ lg: "2fr 1fr", md: "1fr" }}
         ml={{ lg: "320px", md: "250px", sm: "200px" }}
       >
-        <Box borderX={"1px solid"} borderColor={"gray.300"}>
+        <Box borderX={"1px solid"} h="91.5vh" borderColor={"gray.300"}>
           <Routes>
             <PrivateRoute path="posts/:postId" element={<PostDetailCard />} />
             <PrivateRoute path="" element={<PostListing />} />
@@ -46,7 +46,7 @@ function Home() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
-        {showUpdates && (
+        {isDesktopMode && (
           <Box display={isDesktopMode ? "block" : "none"} ps={3} pe={7}>
             <Updates />
           </Box>
