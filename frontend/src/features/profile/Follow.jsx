@@ -56,7 +56,6 @@ function Follow() {
 }
 
 const FollowTabs = ({ fullname, following, followers, currentUser }) => {
-  console.log(following);
   return (
     <>
       <Header text={`${fullname}`} />

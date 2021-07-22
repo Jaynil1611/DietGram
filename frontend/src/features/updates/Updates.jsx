@@ -98,7 +98,7 @@ export const PeopleCard = () => {
             <Box key={id}>
               {!isFollowing && (
                 <Box my={1} py={2} borderY="1px solid" borderColor="gray.300">
-                  <Flex wrap="wrap">
+                  <Flex>
                     <Flex direction="column" shrink="0" basis="48px">
                       <Image
                         loading="lazy"
@@ -107,46 +107,48 @@ export const PeopleCard = () => {
                         alt="Profile"
                       />
                     </Flex>
-                    <RouterLink to={`/${username}`}>
-                      <Flex ms={4} direction="column" wrap="wrap">
-                        <Text
-                          fontWeight={"extrabold"}
-                          _hover={{ textDecoration: "underline" }}
-                        >
-                          {fullname}
-                        </Text>
-                        <Flex align="center">
+                    <Flex w="100%" justify="space-between" wrap="wrap">
+                      <RouterLink to={`/${username}`}>
+                        <Flex ms={4} direction="column" wrap="wrap">
                           <Text
-                            fontSize={"1rem"}
-                            color={"gray.600"}
-                            overflow="hidden"
-                            textOverflow="ellipsis"
-                            whiteSpace="nowrap"
-                            w="90px"
+                            fontWeight={"extrabold"}
+                            _hover={{ textDecoration: "underline" }}
                           >
-                            @{username}
+                            {fullname}
                           </Text>
-                          {checkCurrentUserFollowStatus(
-                            { following },
-                            currentUser.id
-                          ) && (
-                            <Tag p={1} me={4}>
-                              Follows you
-                            </Tag>
-                          )}
+                          <Flex align="center">
+                            <Text
+                              fontSize={"1rem"}
+                              color={"gray.600"}
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                              whiteSpace="nowrap"
+                              w="90px"
+                            >
+                              @{username}
+                            </Text>
+                            {checkCurrentUserFollowStatus(
+                              { following },
+                              currentUser.id
+                            ) && (
+                              <Tag p={1} me={4}>
+                                Follows you
+                              </Tag>
+                            )}
+                          </Flex>
                         </Flex>
+                      </RouterLink>
+                      <Flex align="center" wrap="wrap">
+                        <Button
+                          {...primaryButtonStyleProps}
+                          maxW="max-content"
+                          height={"fit-content"}
+                          onClick={() => follow(id)}
+                          borderRadius="full"
+                        >
+                          Follow
+                        </Button>
                       </Flex>
-                    </RouterLink>
-                    <Flex align="center">
-                      <Button
-                        {...primaryButtonStyleProps}
-                        maxW="max-content"
-                        height={"fit-content"}
-                        onClick={() => follow(id)}
-                        borderRadius="full"
-                      >
-                        Follow
-                      </Button>
                     </Flex>
                   </Flex>
                 </Box>

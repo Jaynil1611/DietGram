@@ -75,9 +75,7 @@ const EditProfileModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
     const updates = getFormValues(e, "profile");
-    console.log(updates);
     dispatch(updateUser({ updates }));
     onClose();
   };
