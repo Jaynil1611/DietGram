@@ -20,14 +20,11 @@ import {
   BsThreeDots,
 } from "react-icons/all";
 import {
-  buttonFocusProps,
   checkBookmarkExists,
   checkCurrentUserStatus,
   checkLikeStatus,
   getDate,
   getProfileImage,
-  navButtonProps,
-  primaryButtonStyleProps,
 } from "../../utils";
 import { Outlet, useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,7 +121,6 @@ function PostDetailCardView({ postId }) {
           <Flex>
             <Flex direction={"column"} basis={"48px"} mr={3} shrink={0}>
               <Image
-                loading="lazy"
                 borderRadius="full"
                 src={getProfileImage(profile_image_url, fullname)}
                 alt="Profile"

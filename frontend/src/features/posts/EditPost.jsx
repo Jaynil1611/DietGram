@@ -15,11 +15,10 @@ import {
   Textarea,
   Divider,
 } from "@chakra-ui/react";
-import { primaryButtonStyleProps } from "../../utils";
+import { getProfileImage, primaryButtonStyleProps } from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserStatus, selectCurrentUser, Loader } from "../index";
 import { editPost } from "./postsSlice";
-import { useNavigate } from "react-router";
 
 function EditPost({ post }) {
   const status = useSelector(getCurrentUserStatus);
@@ -35,8 +34,7 @@ function EditPostModal({ id, content }) {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const initialRef = useRef();
   const dispatch = useDispatch();
-  const { profile_image_url } = useSelector(selectCurrentUser);
-  const navigate = useNavigate();
+  const { profile_image_url, fullname } = useSelector(selectCurrentUser);
 
   const postSubmit = () => {
     dispatch(
@@ -44,7 +42,7 @@ function EditPostModal({ id, content }) {
         post: { id, content: initialRef.current.value },
       })
     );
-    navigate("/");
+    onClose();
   };
 
   return (
@@ -71,7 +69,7 @@ function EditPostModal({ id, content }) {
             borderColor="gray.300"
           >
             <Flex mt={2}>
-              <Avatar src={profile_image_url} />
+              <Avatar src={getProfileImage(profile_image_url, fullname)} />
               <Box w={"100%"}>
                 <FormControl>
                   <Textarea

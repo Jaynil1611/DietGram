@@ -28,6 +28,7 @@ export const updateUserService = async ({ updates }) => {
 };
 
 export const getFollowService = async ({ userId }) => {
+  if (!userId) return;
   const response = await axios.get(`${constructURL()}/users/${userId}/follow`);
   return response.data;
 };

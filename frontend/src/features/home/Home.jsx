@@ -32,7 +32,7 @@ function Home() {
         templateColumns={{ lg: "2fr 1fr", md: "1fr" }}
         ml={{ lg: "320px", md: "250px", sm: "200px" }}
       >
-        <Box borderX={"1px solid"} h="91.5vh" borderColor={"gray.300"}>
+        <Box borderX={"1px solid"} minH="91.5vh" borderColor={"gray.300"}>
           <Routes>
             <PrivateRoute path="posts/:postId" element={<PostDetailCard />} />
             <PrivateRoute path="" element={<PostListing />} />

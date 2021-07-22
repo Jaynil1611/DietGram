@@ -25,9 +25,9 @@ import { Link as RouterLink } from "react-router-dom";
 function Follow() {
   const location = useLocation();
   const dispatch = useDispatch();
+  const status = useSelector(checkCurrentUserStatus);
   const currentUserLogged = useSelector(selectCurrentUser);
   const id = location?.state?.id ?? currentUserLogged?.id;
-  const status = useSelector(checkCurrentUserStatus);
   const followStatus = useSelector(getFollowStatus);
   const user = useSelector((state) => selectUserById(state, id));
   const currentUser = useSelector((state) =>
@@ -76,6 +76,11 @@ const FollowTabs = ({ fullname, following, followers, currentUser }) => {
         </TabList>
         <TabPanels>
           <TabPanel>
+            {following.length === 0 && (
+              <Text textAlign="center" color="gray.500" fontWeight="semibold">
+                Following list is empty
+              </Text>
+            )}
             {following.map((followee) => (
               <PeopleCard
                 key={followee.id}
@@ -92,6 +97,11 @@ const FollowTabs = ({ fullname, following, followers, currentUser }) => {
             ))}
           </TabPanel>
           <TabPanel>
+            {followers.length === 0 && (
+              <Text textAlign="center" color="gray.500" fontWeight="semibold">
+                Follower list is empty
+              </Text>
+            )}
             {followers.map((follower) => (
               <PeopleCard
                 key={follower.id}
