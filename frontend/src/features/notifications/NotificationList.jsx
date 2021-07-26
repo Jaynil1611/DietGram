@@ -72,24 +72,11 @@ function NotificationList() {
             >
               <Flex direction="column" justify="center">
                 {notifications.map((notification) => {
-                  const { id, type } = notification;
                   return (
-                    <Flex key={id} p={4}>
-                      <Flex
-                        direction={"column"}
-                        basis={"48px"}
-                        mr={3}
-                        shrink={0}
-                        align="center"
-                      >
-                        <Icon
-                          boxSize="2.2rem"
-                          as={getIcon(type)}
-                          color={getColor(type)}
-                        />
-                      </Flex>
-                      <NotificationDisplay {...notification} />
-                    </Flex>
+                    <NotificationDisplay
+                      key={notification.id}
+                      {...notification}
+                    />
                   );
                 })}
               </Flex>
@@ -110,28 +97,39 @@ const NotificationDisplay = ({ postId, originUser, type }) => {
   return (
     <>
       {post && (
-        <Link to={`/posts/${postId}`} w="100%">
-          <Flex direction="column" w="100%">
-            <Flex mb={2}>
-              <Image
-                loading="lazy"
-                boxSize="2.5rem"
-                borderRadius="full"
-                src={getProfileImage(profile_image_url, fullname)}
-                alt="Profile"
-              />
-            </Flex>
-            <Flex>
-              <Text mr={1} fontWeight="semibold">
-                {fullname}
-              </Text>
-              <Text>{getText(type)}</Text>
-            </Flex>
-            <Flex mt={2} className="content">
-              <BeautifyContent content={post.content} />
-            </Flex>
+        <Flex p={4}>
+          <Flex
+            direction={"column"}
+            basis={"48px"}
+            mr={3}
+            shrink={0}
+            align="center"
+          >
+            <Icon boxSize="2.2rem" as={getIcon(type)} color={getColor(type)} />
           </Flex>
-        </Link>
+          <Link to={`/posts/${postId}`} w="100%">
+            <Flex direction="column" w="100%">
+              <Flex mb={2}>
+                <Image
+                  loading="lazy"
+                  boxSize="2.5rem"
+                  borderRadius="full"
+                  src={getProfileImage(profile_image_url, fullname)}
+                  alt="Profile"
+                />
+              </Flex>
+              <Flex>
+                <Text mr={1} fontWeight="semibold">
+                  {fullname}
+                </Text>
+                <Text>{getText(type)}</Text>
+              </Flex>
+              <Flex mt={2} className="content">
+                <BeautifyContent content={post.content} />
+              </Flex>
+            </Flex>
+          </Link>
+        </Flex>
       )}
     </>
   );
