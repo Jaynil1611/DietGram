@@ -108,7 +108,7 @@ const removePost = async (req, res, next) => {
     const { post } = req;
     const { userId } = req;
     await post.delete();
-    await Notification.deleteMany({
+    await Notification.deleteOne({
       postId: post._id,
       originUser: userId,
     });
