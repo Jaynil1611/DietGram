@@ -106,7 +106,12 @@ const updatePost = async (req, res, next) => {
 const removePost = async (req, res, next) => {
   try {
     const { post } = req;
+    const { userId } = req;
     await post.delete();
+    await Notification.deleteMany({
+      postId: post._id,
+      originUser: userId,
+    });
     res.status(200).json({ success: true, post: { id: post._id } });
   } catch (error) {
     next(error);

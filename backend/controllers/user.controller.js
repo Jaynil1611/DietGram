@@ -100,9 +100,13 @@ const followUser = async (req, res, next) => {
 
     currentUser.following.push(followedUserId);
     followedUser.followers.push(userId);
-    await currentUser.save();
+    let user = await currentUser.save();
     await followedUser.save();
-    res.status(201).json({ success: true, followedUser, user: currentUser });
+    user = await user
+      .populate("following")
+      .populate("followers")
+      .execPopulate();
+    res.status(201).json({ success: true, followedUser, user });
     createNotificationForFollow(userId, followedUserId);
   } catch (error) {
     next(error);
@@ -123,9 +127,13 @@ const unfollowUser = async (req, res, next) => {
 
     currentUser.following.pull(unfollowedUserId);
     unfollowedUser.followers.pull(userId);
-    await currentUser.save();
+    let user = await currentUser.save();
     await unfollowedUser.save();
-    res.status(201).json({ success: true, unfollowedUser, user: currentUser });
+    user = await user
+      .populate("following")
+      .populate("followers")
+      .execPopulate();
+    res.status(201).json({ success: true, unfollowedUser, user });
   } catch (error) {
     next(error);
   }
