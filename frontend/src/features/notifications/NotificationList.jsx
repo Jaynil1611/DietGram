@@ -8,7 +8,7 @@ import {
   selectPostById,
 } from "../index";
 import {
-  checkPostAndUserStatus,
+  checkCurrentUserStatus,
   getColor,
   getIcon,
   getProfileImage,
@@ -30,7 +30,7 @@ function NotificationList() {
   const dispatch = useDispatch();
   const notificationStatus = useSelector(getNotificationsStatus);
   const notifications = useSelector(selectAllNotifications);
-  const combinedStatus = useSelector(checkPostAndUserStatus);
+  const combinedStatus = useSelector(checkCurrentUserStatus);
 
   const handleRefresh = () => {
     dispatch(refreshNotifications());
@@ -105,31 +105,35 @@ const NotificationDisplay = ({ postId, originUser, type }) => {
   const { profile_image_url, fullname } = useSelector((state) =>
     selectUserById(state, originUser)
   );
-  const { content } = useSelector((state) => selectPostById(state, postId));
+  const post = useSelector((state) => selectPostById(state, postId));
 
   return (
-    <Link to={`/posts/${postId}`} w="100%">
-      <Flex direction="column" w="100%">
-        <Flex mb={2}>
-          <Image
-            loading="lazy"
-            boxSize="2.5rem"
-            borderRadius="full"
-            src={getProfileImage(profile_image_url, fullname)}
-            alt="Profile"
-          />
-        </Flex>
-        <Flex>
-          <Text mr={1} fontWeight="semibold">
-            {fullname}
-          </Text>
-          <Text>{getText(type)}</Text>
-        </Flex>
-        <Flex mt={2} className="content">
-          <BeautifyContent content={content} />
-        </Flex>
-      </Flex>
-    </Link>
+    <>
+      {post && (
+        <Link to={`/posts/${postId}`} w="100%">
+          <Flex direction="column" w="100%">
+            <Flex mb={2}>
+              <Image
+                loading="lazy"
+                boxSize="2.5rem"
+                borderRadius="full"
+                src={getProfileImage(profile_image_url, fullname)}
+                alt="Profile"
+              />
+            </Flex>
+            <Flex>
+              <Text mr={1} fontWeight="semibold">
+                {fullname}
+              </Text>
+              <Text>{getText(type)}</Text>
+            </Flex>
+            <Flex mt={2} className="content">
+              <BeautifyContent content={post.content} />
+            </Flex>
+          </Flex>
+        </Link>
+      )}
+    </>
   );
 };
 

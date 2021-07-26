@@ -35,10 +35,10 @@ function Follow() {
   );
 
   useEffect(() => {
-    if (followStatus === "idle" || followStatus === "fetch") {
+    if (followStatus === "idle" && status === "fulfilled") {
       dispatch(getFollow({ userId: id }));
     }
-  }, [dispatch, followStatus]);
+  }, [dispatch, followStatus, id, status]);
 
   useEffect(() => {
     dispatch(clearFollowStatus());
