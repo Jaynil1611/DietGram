@@ -1,0 +1,20 @@
+.content a {
+  text-decoration: underline;
+  color: #fd751b;
+}
+
+.content a:hover {
+  text-decoration: underline;
+}
+
+.follow:hover span {
+  display: none;
+}
+
+.follow:hover::after {
+  content: "Unfollow";
+}
+
+.follow:hover {
+  background-color: var(--chakra-colors-red-700);
+}
