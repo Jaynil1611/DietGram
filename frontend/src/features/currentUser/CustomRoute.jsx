@@ -2,8 +2,7 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router";
 import { selectToken } from "./currentUserSlice";
 
-function CustomRoute({ path, children, ...rest }) {
-  console.log({ rest });
+function CustomRoute({ path, children }) {
   const token = useSelector(selectToken);
   const location = useLocation();
   const previousPath = location?.state?.from;
