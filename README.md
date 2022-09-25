@@ -13,6 +13,8 @@ View the deployed the backend application here 👉 [DietGram Backend](https://d
 
 ## Application View!
 
+![dietgram vercel app](https://user-images.githubusercontent.com/48921037/192135805-449f0ce2-98bb-4801-ba57-145b5f0d1a1a.png)
+
 
 ## Technologies Used
 - HTML
