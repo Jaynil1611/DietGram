@@ -45,11 +45,39 @@ function App() {
       <Navbar />
       <ScrollToTop />
       <Routes>
-        <CustomRoute path="/login" element={<Login />} />
-        <CustomRoute path="/signup" element={<SignUp />} />
-        <PrivateRoute path="/" element={<Home />} />
+        <Route
+          path="/login"
+          element={
+            <CustomRoute path="/login">
+              <Login />
+            </CustomRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <CustomRoute path="/signup">
+              <SignUp />
+            </CustomRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute path="/">
+              <Home />
+            </PrivateRoute>
+          }
+        />
         <Route path="/*" element={<Home />} />
-        <PrivateRoute path="/logout" element={<Logout />} />
+        <Route
+          path="/logout"
+          element={
+            <PrivateRoute path="/logout">
+              <Logout />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   );

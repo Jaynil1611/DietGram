@@ -16,7 +16,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { getProfileImage, primaryButtonStyleProps } from "../../utils";
-import { MdAddCircle } from "react-icons/all";
+import { MdAddCircle } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserStatus, selectCurrentUser, Loader } from "../index";
 import { addPost } from "./postsSlice";

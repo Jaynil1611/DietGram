@@ -11,14 +11,13 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import {
-  IoMdHeartEmpty,
-  IoMdHeart,
   IoBookmarkOutline,
   IoBookmark,
   IoShareSocialOutline,
-  BsThreeDots,
-} from "react-icons/all";
+} from "react-icons/io5";
+import { BsThreeDots } from "react-icons/bs";
 import {
   checkBookmarkExists,
   checkCurrentUserStatus,

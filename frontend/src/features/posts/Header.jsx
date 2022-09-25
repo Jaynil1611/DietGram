@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Text, Icon } from "@chakra-ui/react";
-import { BiArrowBack } from "react-icons/all";
+import { BiArrowBack } from "react-icons/bi";
 import { showBackButton } from "../../utils";
 import { useNavigate } from "react-router";
 

@@ -1,4 +1,5 @@
-import { IoMdHeart, MdAccountCircle, MdNotifications } from "react-icons/all";
+import { MdAccountCircle, MdNotifications } from "react-icons/md";
+import { IoMdHeart } from "react-icons/io";
 
 export const getIcon = (type) =>
   type === "Like"

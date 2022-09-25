@@ -1,12 +1,12 @@
-import { Navigate, Route } from "react-router";
+import { Navigate } from "react-router";
 import { getTokenFromLocalStorage } from "../../utils";
 
-function PrivateRoute({ path, element }) {
+function PrivateRoute({ path, children }) {
   const token = getTokenFromLocalStorage();
   return (
     <>
       {token ? (
-        <Route exact path={path} element={element} />
+        children
       ) : (
         <Navigate state={{ from: path }} replace to="/login" />
       )}

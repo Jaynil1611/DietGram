@@ -34,15 +34,78 @@ function Home() {
       >
         <Box borderX={"1px solid"} minH="91.5vh" borderColor={"gray.300"}>
           <Routes>
-            <PrivateRoute path="posts/:postId" element={<PostDetailCard />} />
-            <PrivateRoute path="" element={<PostListing />} />
-            <PrivateRoute path="profile" element={<Timeline />} />
-            <PrivateRoute path=":username" element={<Timeline />} />
-            <PrivateRoute path="notifications" element={<NotificationList />} />
-            <PrivateRoute path="profile/follow" element={<Follow />} />
-            <PrivateRoute path=":username/follow" element={<Follow />} />
-            <PrivateRoute path="/hashtag/:name" element={<Hashtag />} />
-            <PrivateRoute path="/bookmarks" element={<Bookmark />} />
+            <Route
+              path="posts/:postId"
+              element={
+                <PrivateRoute path="posts/:postId">
+                  <PostDetailCard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path=""
+              element={
+                <PrivateRoute path="">
+                  <PostListing />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <PrivateRoute path="profile">
+                  <Timeline />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path=":username"
+              element={
+                <PrivateRoute path=":username">
+                  <Timeline />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="notifications"
+              element={
+                <PrivateRoute path="notifications">
+                  <NotificationList />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="profile/follow"
+              element={
+                <PrivateRoute path="profile/follow">
+                  <Follow />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path=":username/follow"
+              element={
+                <PrivateRoute path=":username/follow">
+                  <Follow />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/hashtag/:name"
+              element={
+                <PrivateRoute path="/hashtag/:name">
+                  <Hashtag />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/bookmarks"
+              element={
+                <PrivateRoute path="/bookmarks">
+                  <Bookmark />
+                </PrivateRoute>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

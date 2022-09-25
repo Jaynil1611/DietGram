@@ -1,5 +1,6 @@
 import { Box, Flex, Image, Text, Icon, Link, Button } from "@chakra-ui/react";
-import { GrLocation, BiLink } from "react-icons/all";
+import { GrLocation } from "react-icons/gr";
+import { BiLink } from "react-icons/bi";
 import {
   checkCurrentUserFollowStatus,
   getProfileImage,

@@ -1,7 +1,12 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "dietgram-frontend",
+  "version": "1.0.0",
   "private": true,
+  "description": "frontend code of dietgram-frontend",
+  "keywords": [],
+  "main": "src/index.js",
+  "author": "Jaynil Gaglani",
+  "license": "ISC",
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.6.3",
@@ -12,7 +17,7 @@
     "cra-template-redux": "1.0.3",
     "date-fns": "^2.22.1",
     "framer-motion": "^4.1.17",
-    "history": "^5.0.0",
+    "history": "^5.0.0",  
     "linkifyjs": "*",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -20,7 +25,7 @@
     "react-redux": "^7.2.4",
     "react-router": "^6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "react-string-replace": "^0.4.4"
   },
   "scripts": {

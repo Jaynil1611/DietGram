@@ -1,10 +1,5 @@
-import {
-  BiHomeCircle,
-  BiUser,
-  BiBookmark,
-  BiLogOut,
-  MdNotificationsNone,
-} from "react-icons/all";
+import { BiHomeCircle, BiUser, BiBookmark, BiLogOut } from "react-icons/bi";
+import { MdNotificationsNone } from "react-icons/md";
 
 export const menuList = [
   { name: "Home", path: "/", icon: BiHomeCircle },

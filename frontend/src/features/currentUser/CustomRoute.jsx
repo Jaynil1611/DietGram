@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
-import { Navigate, Route, useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import { selectToken } from "./currentUserSlice";
 
-function CustomRoute({ path, element }) {
+function CustomRoute({ path, children, ...rest }) {
+  console.log({ rest });
   const token = useSelector(selectToken);
   const location = useLocation();
   const previousPath = location?.state?.from;
@@ -16,7 +17,7 @@ function CustomRoute({ path, element }) {
           to={previousPath && !previousPath.includes(":") ? previousPath : "/"}
         />
       ) : (
-        <Route exact path={path} element={element} />
+        children
       )}
     </>
   );

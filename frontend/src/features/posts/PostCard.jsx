@@ -1,11 +1,10 @@
 import { Box, Flex, Image, Text, Icon } from "@chakra-ui/react";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import {
-  IoMdHeartEmpty,
-  IoMdHeart,
   IoBookmarkOutline,
   IoBookmark,
   IoShareSocialOutline,
-} from "react-icons/all";
+} from "react-icons/io5";
 import {
   BeautifyContent,
   selectCurrentUserId,
